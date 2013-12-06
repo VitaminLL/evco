@@ -4,7 +4,7 @@ namespace EVCO
 {
 	public interface IMutation
 	{
-		PopulationMember mutate(PopulationMember member);
+		void mutate(ref PopulationMember member);
 	}
 }
 
