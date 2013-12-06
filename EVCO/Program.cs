@@ -7,37 +7,8 @@ namespace EVCO
 	{
 		public static void Main (string[] args)
 		{
-			PopulationMember[] members = GetInitialPopulation (args);
-		}
-
-		public static PopulationMember[] GetInitialPopulation (string[] args)
-		{
-			PopulationMember[] members;
-
-			if (args.Length > 0) {
-				Console.Write ("Loading Initial Population... ");
-				members = Serializer.DeserializePopulation (new StreamReader (args [0]));
-				Console.WriteLine ("Done");
-			} else {
-				const int INITIAL_POPULATION_SIZE = 4000;
-				Console.Write ("Generating Initial Population... (0/" + INITIAL_POPULATION_SIZE + ")");
-				members = new PopulationMember[INITIAL_POPULATION_SIZE];
-				for (int i = 0; i < members.Length; i++) {
-					do {
-						members [i] = new PopulationMember ();
-					} while (members[i].calculateFitness () == 0);
-
-					Console.SetCursorPosition (0, 0);
-					Console.Write ("Generating Initial Population... (" + i + "/" + INITIAL_POPULATION_SIZE + ")");
-				}
-				Console.SetCursorPosition (0, 0);
-				Console.WriteLine ("Generating Initial Population... Completed");
-				Console.Write ("Saving Population... ");
-				Serializer.SerializePopulation (members, new StreamWriter ("LASTPOP.TXT", false));
-				Console.WriteLine ("Done");
-			}
-
-			return members;
+			PopulationController controller = new PopulationController();
+			controller.InitialisePopulation (args);
 		}
 
 		public static void TestCrossover ()
@@ -60,6 +31,18 @@ namespace EVCO
 			Console.WriteLine (m.ToString ());
 			Console.WriteLine (p.ToString ());
 		}
+
+		public static void PrintPopFitness (PopulationMember[] members)
+		{
+			int maxFitness = 0;
+			for (int i = 0; i < members.Length; i++) {
+				if (members [i].calculateFitness () > maxFitness)
+					maxFitness = members [i].lastFitness;
+			}
+
+			Console.WriteLine ("Population Fitness: " + maxFitness);
+		}
+
 
 	}
 }

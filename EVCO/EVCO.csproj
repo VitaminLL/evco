@@ -50,6 +50,7 @@
     <Compile Include="RandomImplementations\StandardRandom.cs" />
     <Compile Include="SelectionImplementations\TournamentSelection.cs" />
     <Compile Include="MutationImplementations\ShiftOneSpaceMutation.cs" />
+    <Compile Include="PopulationController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
