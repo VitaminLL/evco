@@ -4,7 +4,7 @@ namespace EVCO
 {
 	public interface ICrossover
 	{
-		void crossover(out PopulationMember first, out PopulationMember second);
+		void crossover(ref PopulationMember first, ref PopulationMember second);
 	}
 }
 

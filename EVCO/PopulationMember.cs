@@ -19,7 +19,7 @@ namespace EVCO
 		private void initialisePopulation()
 		{
 			do {
-				parameters = new int[4];//_generator.next (4, 17)];
+				parameters = new int[_generator.next (4, 17)];
 			} while (parameters.Length % 4 != 0);
 
 			// Populate the parameters array
@@ -48,35 +48,35 @@ namespace EVCO
 				switch (direction) {
 				case 0:
 						parameters [i + 2] = parameters [i];
-						parameters [i + 3] = parameters [i + 1] + 5;
+						parameters [i + 3] = parameters [i + 1] + 4;
 					break;
 				case 1:
-						parameters [i + 2] = parameters [i] - 5;
-						parameters [i + 3] = parameters [i + 1] - 5;
+						parameters [i + 2] = parameters [i] - 4;
+						parameters [i + 3] = parameters [i + 1] - 4;
 					break;
 				case 2:
-						parameters [i + 2] = parameters [i] + 5;
+						parameters [i + 2] = parameters [i] + 4;
 						parameters [i + 3] = parameters [i + 1];
 					break;
 				case 3:
-						parameters [i + 2] = parameters [i] + 5;
-						parameters [i + 3] = parameters [i + 1] + 5;
+						parameters [i + 2] = parameters [i] + 4;
+						parameters [i + 3] = parameters [i + 1] + 4;
 					break;
 				case 4:
 						parameters [i + 2] = parameters [i];
-						parameters [i + 3] = parameters [i + 1] + 5;
+						parameters [i + 3] = parameters [i + 1] + 4;
 					break;
 				case 5:
-						parameters [i + 2] = parameters [i] - 5;
-						parameters [i + 3] = parameters [i + 1] + 5;
+						parameters [i + 2] = parameters [i] - 4;
+						parameters [i + 3] = parameters [i + 1] + 4;
 					break;
 				case 6:
-						parameters [i + 2] = parameters [i] - 5;
+						parameters [i + 2] = parameters [i] - 4;
 						parameters [i + 3] = parameters [i + 1];
 					break;
 				case 7:
-						parameters [i + 2] = parameters [i] - 5;
-						parameters [i + 3] = parameters [i + 1] - 5;
+						parameters [i + 2] = parameters [i] - 4;
+						parameters [i + 3] = parameters [i + 1] - 4;
 					break;
 					}
 				} while (parameters[i] < 1 || parameters[i] > 40

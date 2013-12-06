@@ -20,9 +20,10 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <Commandlineparameters>LASTPOP.TXT</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>full</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -41,14 +42,22 @@
     <Compile Include="Interfaces\ICrossover.cs" />
     <Compile Include="Interfaces\IRandom.cs" />
     <Compile Include="Utilities\Solitaire.cs" />
-    <Compile Include="Utilities\StandardRandom.cs" />
     <Compile Include="PopulationMember.cs" />
     <Compile Include="Utilities\ClassFactory.cs" />
     <Compile Include="Properties\Configuration.cs" />
+    <Compile Include="Utilities\Serializer.cs" />
+    <Compile Include="CrossoverImplementations\OnePointCrossover.cs" />
+    <Compile Include="RandomImplementations\StandardRandom.cs" />
+    <Compile Include="SelectionImplementations\TournamentSelection.cs" />
+    <Compile Include="MutationImplementations\ShiftOneSpaceMutation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Utilities\" />
+    <Folder Include="CrossoverImplementations\" />
+    <Folder Include="MutationImplementations\" />
+    <Folder Include="SelectionImplementations\" />
+    <Folder Include="RandomImplementations\" />
   </ItemGroup>
 </Project>
