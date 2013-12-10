@@ -20,7 +20,6 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
-    <Commandlineparameters>LASTPOP.TXT</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -30,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <Commandlineparameters>LASTPOP.TXT</Commandlineparameters>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,9 +48,9 @@
     <Compile Include="Utilities\Serializer.cs" />
     <Compile Include="CrossoverImplementations\OnePointCrossover.cs" />
     <Compile Include="RandomImplementations\StandardRandom.cs" />
-    <Compile Include="SelectionImplementations\TournamentSelection.cs" />
     <Compile Include="MutationImplementations\ShiftOneSpaceMutation.cs" />
     <Compile Include="PopulationController.cs" />
+    <Compile Include="SelectionImplementations\HighestRankingSelection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

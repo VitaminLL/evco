@@ -1,14 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="PopulationController.cs">
     <Files>
-      <File FileName="Program.cs" Line="35" Column="3" />
-      <File FileName="PopulationMember.cs" Line="21" Column="8" />
+      <File FileName="Program.cs" Line="15" Column="7" />
+      <File FileName="PopulationMember.cs" Line="21" Column="47" />
       <File FileName="Utilities/ClassFactory.cs" Line="1" Column="1" />
-      <File FileName="Utilities/Solitaire.cs" Line="31" Column="1" />
-      <File FileName="Interfaces/ICrossover.cs" Line="1" Column="1" />
-      <File FileName="Utilities/StandardRandom.cs" Line="1" Column="1" />
+      <File FileName="Utilities/Solitaire.cs" Line="18" Column="1" />
+      <File FileName="Interfaces/ICrossover.cs" Line="7" Column="31" />
       <File FileName="Utilities/Serializer.cs" Line="38" Column="69" />
+      <File FileName="MutationImplementations/ShiftOneSpaceMutation.cs" Line="11" Column="46" />
+      <File FileName="Interfaces/IMutation.cs" Line="7" Column="27" />
+      <File FileName="PopulationController.cs" Line="174" Column="1" />
+      <File FileName="Interfaces/ISelection.cs" Line="13" Column="3" />
+      <File FileName="Properties/Configuration.cs" Line="1" Column="1" />
+      <File FileName="SelectionImplementations/TournamentSelection.cs" Line="30" Column="40" />
+      <File FileName="SelectionImplementations/HighestRankingSelection.cs" Line="12" Column="40" />
+      <File FileName="CrossoverImplementations/OnePointCrossover.cs" Line="27" Column="42" />
+      <File FileName="Disassembly" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -7,11 +7,17 @@ namespace EVCO
 	{
 		public static void Main (string[] args)
 		{
-			PopulationController controller = new PopulationController();
+			PopulationController controller = new PopulationController ();
 			controller.InitialisePopulation (args);
+
+			while (true) {
+				controller.ThreadedPrintPopFitness ();
+				//controller.PrintPopFitness ();
+				controller.executeNextRound ();
+			}
 		}
 
-		public static void TestCrossover ()
+		/*public static void TestCrossover ()
 		{
 			// Code to test crossover function
 			PopulationMember m = new PopulationMember ();
@@ -30,18 +36,9 @@ namespace EVCO
 			Console.WriteLine ();
 			Console.WriteLine (m.ToString ());
 			Console.WriteLine (p.ToString ());
-		}
+		}*/
 
-		public static void PrintPopFitness (PopulationMember[] members)
-		{
-			int maxFitness = 0;
-			for (int i = 0; i < members.Length; i++) {
-				if (members [i].calculateFitness () > maxFitness)
-					maxFitness = members [i].lastFitness;
-			}
 
-			Console.WriteLine ("Population Fitness: " + maxFitness);
-		}
 
 
 	}

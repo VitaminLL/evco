@@ -5,16 +5,12 @@ namespace EVCO
 	public interface ISelection
 	{
 		/// <summary>
-		/// Decides which of the two to select
+		/// Returns the set of population members that should be carried forwards into the next iteration
 		/// </summary>
-		/// <param name='first'>
-		/// The first member to evaluate
+		/// <param name='current'>
+		/// The current population
 		/// </param>
-		/// <param name='second'>
-		/// The second member to evaluate
-		/// </param>
-		/// <returns>True if the first is chosen, false if the second</returns>
-		bool select(PopulationMember first, PopulationMember second);
+		PopulationMember[] select(PopulationMember[] current);
 	}
 }
 

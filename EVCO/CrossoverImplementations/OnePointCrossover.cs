@@ -12,7 +12,7 @@ namespace EVCO
 			_generator = ClassFactory.GetRandomGenertor ();
 		}
 
-		public void crossover (ref PopulationMember first, ref PopulationMember second)
+		public PopulationMember crossover (PopulationMember first, PopulationMember second)
 		{
 			int shortest = first.parameters.Length > second.parameters.Length ? second.parameters.Length : first.parameters.Length;
 			int crossoverPoint = _generator.next (4, shortest);
@@ -36,8 +36,16 @@ namespace EVCO
 				secondList.Add (first.parameters [i]);
 			}
 
-			first.parameters = firstList.ToArray ();
-			second.parameters = secondList.ToArray ();
+			// Choose at random which to go with
+
+			PopulationMember p = new PopulationMember();
+
+			if (_generator.next (0,2) == 0)
+				p.parameters = firstList.ToArray ();
+			else
+				p.parameters = secondList.ToArray ();
+
+			return p;
 		}
 	}
 }

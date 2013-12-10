@@ -2,7 +2,7 @@ using System;
 
 namespace EVCO
 {
-	public class TournamentSelection : ISelection
+	/*public class TournamentSelection : ISelection
 	{
 		IRandom _generator;
 
@@ -25,6 +25,8 @@ namespace EVCO
 				return (_generator.next (0, 2) == 0);
 			}
 		}
-	}
+	}*/
+
+	// Outdated since changing IComparable
 }
 

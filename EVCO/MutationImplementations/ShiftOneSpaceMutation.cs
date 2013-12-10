@@ -8,7 +8,7 @@ namespace EVCO
 
 		// Changes the probability that each move will be changed
 		// Set this to 10 for prob=0.1, 100 for prob=0.01 etc.
-		const int MUTATION_PROBABILITY_INVERSE = 10;
+		const int MUTATION_PROBABILITY_INVERSE = 20;
 
 		public ShiftOneSpaceMutation ()
 		{
@@ -35,7 +35,7 @@ namespace EVCO
 					case 2:
 						//left
 						newMember.parameters [i]--;
-						newMember.parameters [i - 2]--;
+						newMember.parameters [i + 2]--;
 						break;
 					case 3:
 						//up

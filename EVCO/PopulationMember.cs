@@ -1,10 +1,9 @@
 using System;
 using System.Text;
-using System.Linq;
 
 namespace EVCO
 {
-	public class PopulationMember
+	public class PopulationMember : IComparable
 	{
 		public int[] parameters { get; set;} 
 		private IRandom _generator;
@@ -19,7 +18,7 @@ namespace EVCO
 		private void initialisePopulation()
 		{
 			do {
-				parameters = new int[_generator.next (4, 17)];
+				parameters = new int[_generator.next (1024, 2000)];
 			} while (parameters.Length % 4 != 0);
 
 			// Populate the parameters array
@@ -105,6 +104,19 @@ namespace EVCO
 
 			s.Append ("}");
 			return s.ToString ();
+		}
+
+		public int CompareTo (object toCompare)
+		{
+			int otherLastFitness = ((PopulationMember)toCompare).lastFitness;
+			if (otherLastFitness > this.lastFitness) {
+				return 1;
+			} else if (otherLastFitness == this.lastFitness) {
+				return 0;
+			} else {
+				return -1;
+			}
+
 		}
 	}
 }
