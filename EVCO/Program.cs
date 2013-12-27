@@ -11,8 +11,8 @@ namespace EVCO
 			controller.InitialisePopulation (args);
 
 			while (true) {
-				controller.ThreadedPrintPopFitness ();
-				//controller.PrintPopFitness ();
+				//controller.ThreadedPrintPopFitness ();
+				controller.PrintPopFitness ();
 				controller.executeNextRound ();
 			}
 		}

@@ -20,8 +20,8 @@ namespace EVCO
 			members = new PopulationMember[0];
 
 			crosser = new OnePointCrossover();
-			mutator = new ShiftOneSpaceMutation();
-			selector = new HighestRankingSelection();
+			mutator = new ShiftAndRotateMutation();
+			selector = new RouletteSelectionWithElitism();
 
 			_generator = ClassFactory.GetRandomGenertor ();
 		}
@@ -91,7 +91,7 @@ namespace EVCO
 			//Console.WriteLine ("Beginning Mutation");
 
 			for (int i = 0; i < newPop.Count; i++) {
-				if (_generator.next (0, 10) == 4) {
+				if (_generator.next (0, 5) == 4) {
 					//Console.WriteLine ("Mutating {0}...", i);
 					newPop [i] = mutator.mutate (newPop [i]);
 				}
@@ -172,7 +172,7 @@ namespace EVCO
 			for (int i = start; i < stop && i < members.Length; i++) {
 				if (members [i].calculateFitness () > maxFitness) {
 					maxFitness = members [i].lastFitness;
-					Console.WriteLine (members[i].ToString ());
+					//Console.WriteLine (members[i].ToString ());
 				}
 			}
 

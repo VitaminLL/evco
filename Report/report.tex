@@ -65,6 +65,20 @@ The program accepts a maximum of 2000 inputs, or 500 moves. Given that the curre
 
 \section{Representation}
 
+The standard genotype in a genetic algorithm is a bit-string. Studies have shown that in a lot of cases the algorithm will perform better when a bit string is used \cite{something}, although other studies suggest that this is not necessarily the case \cite{somethingElse}.\\
+
+I will now discuss possible representations, and then explain my choice of representation.
+
+\subsection{Gray Code Bit-string}
+
+Binary bit-strings are not ideal for a genetic algorithm as a single bit flip during the mutation stage can cause the number to change a lot. Consider the bit string $10010110$ that represents the 8 bit unsigned integer 150. During mutation, if just the first bit is flipped, the string becomes $00010110$ and now represents 22. If the search space is a 256x256 grid, and that integer represents one co-ordinate, then 150 to 22 is a large jump. It would be more useful if the co-ordinate changed by just a small amount. If we wanted to change to 149 ($10010101$), two bit flips are required. \\
+
+One solution to this is to use Gray code. This is a bit-string where each consecutive value differs by only one bit. In Gray code, $11011101$ represents 150, and $11011111$ represents 149. That's just a single bit flip, making Gray code ideal for genetic algorithms. \\
+
+There are now a few possible options for how Gray code could be used to represent an individual move, and then a series of moves. The first option is to represent the co-ordinates as they are passed into the program in Gray code (remember that a move is passed in to the program as $x_1 y_1 x_2 y_2$). The grid 40x40, so ($\log _2 40 = 5.32$) 6 bits would be required to represent each co-ordinate. Each move would use 24 bits, and if the maximum number of moves is played each time (500), then 12000 bits or 1500 bytes will be required for each population member. If we have a population size of 5000, then the total required space will be 7.15MB.  \\
+
+The second option is to store each move as a combination of (co-ordinate, direction), where co-ordinate is the new cross to draw on the board, and direction is the direction of the line. So ((20, 20), left) would mean draw a cross at position (20, 20), and draw left. This would then be translated into the program's input format $x_1 y_1 x_2 y_2$ to be 20 20 15 20.
+
 \section{Selection}
 
 \section{Crossover}

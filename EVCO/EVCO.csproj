@@ -51,6 +51,9 @@
     <Compile Include="MutationImplementations\ShiftOneSpaceMutation.cs" />
     <Compile Include="PopulationController.cs" />
     <Compile Include="SelectionImplementations\HighestRankingSelection.cs" />
+    <Compile Include="SelectionImplementations\RouletteSelection.cs" />
+    <Compile Include="SelectionImplementations\RouletteSelectionWithElitism.cs" />
+    <Compile Include="MutationImplementations\ShiftAndRotateMutation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

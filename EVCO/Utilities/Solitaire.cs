@@ -21,8 +21,8 @@ namespace EVCO
 			Process p = new Process ();
 			p.StartInfo.Arguments = s.ToString ().Trim();
 			p.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
-			//p.StartInfo.FileName = "macMsolitare.exe";
-			p.StartInfo.FileName = "./linuxLiteMsolitare.exe";
+			p.StartInfo.FileName = "macMsolitare.exe";
+			//p.StartInfo.FileName = "./linuxLiteMsolitare.exe";
 			p.StartInfo.RedirectStandardOutput = true;
 			p.StartInfo.UseShellExecute = false;
 			p.Start();

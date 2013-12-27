@@ -18,7 +18,7 @@ namespace EVCO
 		private void initialisePopulation()
 		{
 			do {
-				parameters = new int[_generator.next (1024, 2000)];
+				parameters = new int[2000 /*_generator.next (1024, 2000)*/];
 			} while (parameters.Length % 4 != 0);
 
 			// Populate the parameters array
