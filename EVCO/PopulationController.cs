@@ -120,17 +120,23 @@ namespace EVCO
 			//Console.WriteLine ("Beginning next round");
 			// Select the fittest population members
 			// Proportion is decided by selection implementation
-			List<PopulationMember> newPop = new List<PopulationMember>(this.selectFittestMembers());
+			List<PopulationMember> newPop = new List<PopulationMember> (this.selectFittestMembers ());
 
 			// Remainder to be generated from crossover
 			int toCrossover = members.Length - newPop.Count;
 			newPop = this.addCrossoverMembers (newPop, toCrossover);
+						
+			members = newPop.ToArray ();
+
+			// Save
+			if (Configuration.SAVE_FILE != String.Empty) {
+				Serializer.SerializePopulation (members, new StreamWriter (Configuration.SAVE_FILE, false));
+			}
 
 			// Test: Mutate only crossovers removes this line
 			// Mutate the new population a little
 			//newPop = this.mutateRandomly(newPop);
 
-			members = newPop.ToArray ();
 		}
 
 		public void PrintPopFitness ()

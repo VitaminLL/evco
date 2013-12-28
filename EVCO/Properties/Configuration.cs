@@ -16,6 +16,7 @@ namespace EVCO
 		public static int NEW_DURING_MUTATION_INVERSE = 100;
 
 		public static string POPULATION_FILE = String.Empty;
+		public static string SAVE_FILE = String.Empty;
 
 		public Configuration ()
 		{

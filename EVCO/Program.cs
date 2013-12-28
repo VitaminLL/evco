@@ -12,11 +12,15 @@ namespace EVCO
 
 			PopulationController controller = new PopulationController ();
 			controller.InitialisePopulation ();
+			int round = 1;
 
 			while (true) {
 				//controller.ThreadedPrintPopFitness ();
 				controller.PrintPopFitness ();
 				controller.executeNextRound ();
+				round++;
+				if (round % 10 == 0)
+					Console.WriteLine ("Generation " + round.ToString());
 			}
 		}
 
@@ -53,6 +57,9 @@ namespace EVCO
 						break;
 					case "POPULATION_FILE":
 						Configuration.POPULATION_FILE = split[1];
+						break;
+					case "SAVE_FILE":
+						Configuration.SAVE_FILE = split[1];
 						break;
 					}
 				} catch {
