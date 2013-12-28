@@ -13,6 +13,21 @@ namespace EVCO
 		{
 			return (IRandom)Activator.CreateInstance (Configuration.GetRandomGenerator ());
 		}
+
+		public static ICrossover GetCrossover ()
+		{
+			return (ICrossover)Activator.CreateInstance (Configuration.GetCrossoverOperator ());
+		}
+
+		public static IMutation GetMutator ()
+		{
+			return (IMutation)Activator.CreateInstance (Configuration.GetMutationOperator());
+		}
+
+		public static ISelection GetSelector ()
+		{
+			return (ISelection)Activator.CreateInstance (Configuration.GetSelectionOperator());
+		}
 	}
 }
 

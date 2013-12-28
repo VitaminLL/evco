@@ -7,13 +7,57 @@ namespace EVCO
 	{
 		public static void Main (string[] args)
 		{
+			SetupConfiguration (args);
+			Configuration.PrintConfiguration ();
+
 			PopulationController controller = new PopulationController ();
-			controller.InitialisePopulation (args);
+			controller.InitialisePopulation ();
 
 			while (true) {
 				//controller.ThreadedPrintPopFitness ();
 				controller.PrintPopFitness ();
 				controller.executeNextRound ();
+			}
+		}
+
+		public static void SetupConfiguration (string[] args)
+		{
+			foreach (string s in args) {
+				try {
+					string[] split = s.Split ('=');
+
+					switch (split [0]) {
+					case "CROSSOVER_OPERATOR":
+						Configuration.CROSSOVER_OPERATOR_TYPE = split [1];
+						break;
+					case "SELECTION_OPERATOR":
+						Configuration.SELECTION_OPERATOR_TYPE = split [1];
+						break;
+					case "MUTATION_OPERATOR":
+						Configuration.MUTATION_OPERATOR_TYPE = split [1];
+						break;
+					case "RANDOM_GENERTOR":
+						Configuration.RANDOM_GENERTOR_TYPE = split [1];
+						break;
+					case "SELECTION_RATIO":
+						Configuration.SELECTION_RATIO = (float)Convert.ToDecimal (split [1]);
+						break;
+					case "POPULATION_SIZE":
+						Configuration.POPULATION_SIZE = Convert.ToInt32 (split [1]);
+						break;
+					case "MUTATION_CHANCE_INVERSE":
+						Configuration.MUTATION_CHANCE_INVERSE = Convert.ToInt32(split[1]);
+						break;
+					case "NEW_DURING_MUTATION_INVERSE":
+						Configuration.NEW_DURING_MUTATION_INVERSE = Convert.ToInt32(split[1]);
+						break;
+					case "POPULATION_FILE":
+						Configuration.POPULATION_FILE = split[1];
+						break;
+					}
+				} catch {
+					Console.WriteLine ("Faulty Parameter: " + s);
+				}
 			}
 		}
 

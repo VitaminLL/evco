@@ -12,42 +12,40 @@ namespace EVCO
 		ICrossover crosser;
 		IMutation mutator;
 		ISelection selector;
-
-		IRandom _generator;
+		IRandom generator;
 
 		public PopulationController ()
 		{
 			members = new PopulationMember[0];
 
-			crosser = new OnePointCrossover();
-			mutator = new ShiftAndRotateMutation();
-			selector = new RouletteSelectionWithElitism();
-
-			_generator = ClassFactory.GetRandomGenertor ();
+			crosser = ClassFactory.GetCrossover();
+			mutator = ClassFactory.GetMutator();
+			selector = ClassFactory.GetSelector();
+			generator = ClassFactory.GetRandomGenertor ();
 		}
 
-		public void InitialisePopulation(string[] args)
+		public void InitialisePopulation()
 		{
-			if (args.Length > 0) {
+			if (Configuration.POPULATION_FILE != String.Empty) {
 				Console.Write ("Loading Initial Population... ");
-				members = Serializer.DeserializePopulation (new StreamReader (args [0]));
+				members = Serializer.DeserializePopulation (new StreamReader (Configuration.POPULATION_FILE));
 				Console.WriteLine ("Done");
 			} else {
-				const int INITIAL_POPULATION_SIZE = 4000;
-				Console.Write ("Generating Initial Population... (0/" + INITIAL_POPULATION_SIZE + ")");
-				members = new PopulationMember[INITIAL_POPULATION_SIZE];
+				int POPULATION_SIZE = Configuration.POPULATION_SIZE;
+				Console.WriteLine ("Generating Initial Population... (0/" + POPULATION_SIZE + ")");
+				members = new PopulationMember[POPULATION_SIZE];
 				for (int i = 0; i < members.Length; i++) {
 					do {
 						members [i] = new PopulationMember ();
 					} while (members[i].calculateFitness () == 0);
 
-					Console.SetCursorPosition (0, 0);
+					//Console.SetCursorPosition (0, 0);
 					//Console.Write ("Generating Initial Population... (" + i + "/" + INITIAL_POPULATION_SIZE + ")");
 				}
-				Console.SetCursorPosition (0, 0);
+				//Console.SetCursorPosition (0, 0);
 				Console.WriteLine ("Generating Initial Population... Completed   ");
 				Console.Write ("Saving Population... ");
-				Serializer.SerializePopulation (members, new StreamWriter ("LASTPOP_" + INITIAL_POPULATION_SIZE.ToString () + ".TXT", false));
+				Serializer.SerializePopulation (members, new StreamWriter ("LASTPOP_" + POPULATION_SIZE.ToString () + ".TXT", false));
 				Serializer.SerializePopulation (members, new StreamWriter ("LASTPOP.TXT", false));
 				Console.WriteLine ("Done");
 			}
@@ -72,33 +70,50 @@ namespace EVCO
 			}
 
 			for (int i = 0; i < numberToAdd; i++) {
-				int first = probabilityArray [_generator.next (0, probabilityArray.Count)];
+				int first = probabilityArray [generator.next (0, probabilityArray.Count)];
 				int second = -1;
 				do {
-					second = probabilityArray [_generator.next (0, probabilityArray.Count)];
+					second = probabilityArray [generator.next (0, probabilityArray.Count)];
 				} while (second == first);
 
 				//Console.WriteLine ("{4}/{5}: Crossing {0} (fitness {1}) and {2} (fitness {3})", first, newPop[first].lastFitness, second, newPop[second].lastFitness, i, numberToAdd);
 
-				newPop.Add(crosser.crossover (newPop[first], newPop[second]));
+				// Mutate crossover members
+				PopulationMember newMember = crosser.crossover(newPop[first], newPop[second]);
+				newMember = mutator.mutate (newMember);
+
+				// With a certain probability, the crossover will be dismissed and a brand new population member introduced
+				if (generator.next (0, Configuration.NEW_DURING_MUTATION_INVERSE) == 0)
+				{
+					PopulationMember p = new PopulationMember();
+					while (p.calculateFitness () < 1)
+						p = new PopulationMember();
+					newPop.Add (p);
+				}
+				else
+				{
+					newPop.Add (newMember);
+				}
+
+				//newPop.Add(crosser.crossover (newPop[first], newPop[second]));
 			}
 
 			return newPop;
 		}
 
-		private List<PopulationMember> mutateRandomly (List<PopulationMember> newPop)
+		/*private List<PopulationMember> mutateRandomly (List<PopulationMember> newPop)
 		{
 			//Console.WriteLine ("Beginning Mutation");
 
 			for (int i = 0; i < newPop.Count; i++) {
-				if (_generator.next (0, 5) == 4) {
+				if (generator.next (0, 5) == 4) {
 					//Console.WriteLine ("Mutating {0}...", i);
 					newPop [i] = mutator.mutate (newPop [i]);
 				}
 			}
 
 			return newPop;
-		}
+		}*/
 
 		public void executeNextRound ()
 		{
@@ -111,8 +126,9 @@ namespace EVCO
 			int toCrossover = members.Length - newPop.Count;
 			newPop = this.addCrossoverMembers (newPop, toCrossover);
 
+			// Test: Mutate only crossovers removes this line
 			// Mutate the new population a little
-			newPop = this.mutateRandomly(newPop);
+			//newPop = this.mutateRandomly(newPop);
 
 			members = newPop.ToArray ();
 		}

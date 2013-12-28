@@ -9,7 +9,7 @@ namespace EVCO
 	public class HighestRankingSelection : ISelection
 	{
 		IRandom _generator;
-		const float PROPORTION_TO_PICK = 0.66f;
+		float PROPORTION_TO_PICK = Configuration.SELECTION_RATIO;
 
 		public HighestRankingSelection ()
 		{

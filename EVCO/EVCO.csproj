@@ -20,6 +20,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
+    <Commandlineparameters>POPULATION_SIZE=100 SELECTION_RATIO=0.2 SELECTION_OPERATOR=EVCO.HighestRankingSelection Selection MUTATION_CHANCE_INVERSE=20 MUTATION_OPERATOR=EVCO.ShiftOneSpaceMutation CROSSOVER_OPERATOR=EVCO.MultiPointCrossover NEW_DURING_MUTATION_INVERSE=20</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -54,6 +55,7 @@
     <Compile Include="SelectionImplementations\RouletteSelection.cs" />
     <Compile Include="SelectionImplementations\RouletteSelectionWithElitism.cs" />
     <Compile Include="MutationImplementations\ShiftAndRotateMutation.cs" />
+    <Compile Include="CrossoverImplementations\MultiPointCrossover.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

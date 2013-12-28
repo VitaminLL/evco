@@ -6,7 +6,7 @@ namespace EVCO
 	public class RouletteSelectionWithElitism : ISelection
 	{
 		IRandom _generator;
-		const float PROPORTION_TO_PICK = 0.66f;
+		float PROPORTION_TO_PICK = Configuration.SELECTION_RATIO;
 
 		public RouletteSelectionWithElitism ()
 		{
@@ -29,7 +29,7 @@ namespace EVCO
 					added = 0;
 				}
 
-				if (current [x].lastFitness == fitness) {
+				if (added < pNew.Length && current [x].lastFitness == fitness) {
 					pNew [added] = current [x];
 					added++;
 				}
@@ -38,7 +38,7 @@ namespace EVCO
 
 			for (int i = 0; i < current.Length; i++) {
 				if (current [i].lastFitness != fitness) {
-					for (int x = 0; x < current [i].lastFitness; x++)
+					for (int x = 0; x < current [i].lastFitness * current[i].lastFitness; x++)
 						distList.Add (i);
 				}
 			}

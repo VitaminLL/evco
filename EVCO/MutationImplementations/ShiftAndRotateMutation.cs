@@ -8,7 +8,7 @@ namespace EVCO
 
 		// Changes the probability that each move will be changed
 		// Set this to 10 for prob=0.1, 100 for prob=0.01 etc.
-		const int MUTATION_PROBABILITY_INVERSE = 20;
+		int MUTATION_PROBABILITY_INVERSE = Configuration.MUTATION_CHANCE_INVERSE;
 
 		public ShiftAndRotateMutation ()
 		{
@@ -19,7 +19,7 @@ namespace EVCO
 		{
 			PopulationMember newMember = new PopulationMember();
 			newMember.parameters = member.parameters;
-			int shiftAmount = _generator.next (1, 6); // Move up to 5 in either direction
+			int shiftAmount = 1;//_generator.next (1, 10); // Move up to 5 in either direction
 			for (int i = 0; i < member.parameters.Length; i+=4) {
 				if (_generator.next (0, MUTATION_PROBABILITY_INVERSE) == 0) {
 					switch (_generator.next (0, 8)) {
