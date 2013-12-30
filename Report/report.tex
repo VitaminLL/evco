@@ -108,11 +108,72 @@ We then perform a mutation operator on the representation that has a 10 \% proba
 
 This is the same as 56 21 24 28, an obviously invalid move because the board is limited to 40x40, and also because no the co-ordinates don't represent a lines that is 5 positions long. \\
 
-Using an integer representation then the mutation operator would know what changes could be made to a group of integers that would still be valid, and only perform these. For example, with 20 20 24 24, it might decide to shift down by 2 rows, and so it woul	d subtract 2 from the y co-ordinates. Of course there is no reason why this can't be done with a binary representation - using binary arithmetic 000010 could be subtracted from each x co-ordinate, but using binary provides no advantage over using an integer representation, but does include the disadvantage that when used in the `pure' genetic algorithm sense (i.e. flipping bits at random), then there is a high probability of creating an invalid move. \\
+Using an integer representation then the mutation operator would know what changes could be made to a group of integers that would still be valid, and only perform these. For example, with 20 20 24 24, it might decide to shift down by 2 rows, and so it would subtract 2 from the y co-ordinates. Of course there is no reason why this can't be done with a binary representation - using binary arithmetic 000010 could be subtracted from each x co-ordinate, but using binary provides no advantage over using an integer representation, but does include the disadvantage that when used in the `pure' genetic algorithm sense (i.e. flipping bits at random), then there is a high probability of creating an invalid move. Of course this is counteracted by using Gray code, but now we consider crossover. \\
 
-To confirm that using an integer representation doesn't disadvantage the algorithm, we must also consider crossover. Consider the two 
+To confirm that using an integer representation instead of Gray code doesn't disadvantage the algorithm, we must also analyse the effect on crossover. Consider the below samples of two population members in binary / Gray code (for this section the point holds for both representations):
+
+\begin{verbatim}
+	... 011111 011111 011111 0100011 001100 000001 001000 000001 ...
+	... 000000 000001 000000 0000101 101000 000110 100100 000010 ...
+\end{verbatim}
+
+The top one describes the move 31 31 31 35 12 1 8 1, and the bottom describes 0 1 0 5 40 6 36 2. With a naive crossover algorithm, any point in the two binary strings could be chosen to crossover. The above samples each have 48 bits, so let's randomly choose to swap at bit 37. The two new population members are now:
+
+\begin{verbatim}
+	... 011111 011111 011111 0100011 001100 000001 000100 000010 ...
+	... 000000 000001 000000 0000101 101000 000110 101000 000001 ...
+\end{verbatim}
+
+The top member now represents 31 31 31 35 12 1 4 2, and the bottom 0 1 0 5 40 6 40 1. The second move in each member has been made invalid, reducing the fitness of the member. The chances of performing a crossover and increasing the fitness around the crossover point with a binary representation is therefore low. However, it could still be the case that ultimately the fitness of the member is increased as the moves before the crossover point combined with the moves after the crossover point could together improve the overall fitness. \\
+
+It is not hard to imagine a situation where the crossover produced a number that is greater than 40, thus rendering the move invalid. To counter these problems we could improve the crossover algorithm to only crossover after whole numbers (i.e. where bit position MOD 6 = 0). If this approach is to taken though, we may as well be using integers because we will only be crossing over in the same position as if we were using integers. \\
+
+\subsection{Conclusion}
+
+Because I do not believe that using a binary/Gray code representation will provide an advantage, and because an integer representation will be easier to debug and quickly analyse, I have decided to use an integer representation. In the Gray Code Bit-string section I discussed the different representations that could be used, such as giving every position on the board a single number, and then following that by a direction. The same could be done with an integer representation, but I have dismissed this for the same reasons as before: the overhead associated with converting between two formats does not appear to outweigh the small advantage of using less memory. \\
 
 \section{Selection}
+Now that a representation has been decided on, each stage of the genetic algorithm must be decided on. The first of these is selection. With a population in whose members we know the individual fitness of, we must decide which of the members to take through to the next generation, and which should be discarded to be replaced by crossed over and mutated population members.
+
+\subsection{Highest Ranking}
+
+The Highest Ranking selection algorithm is very simple. The population members are sorted in order of fitness, and then a fraction of the top members are selected to continue to the next round. \\
+
+At first glance this sounds like an ideal solution. To understand why this is not necessarily the case, imagine if the population members were dogs. While choosing which dogs to breed to create a new generation of dogs, we only choose the dogs that are the best looking. One particular ugly dog is not chosen to be bred, but what we didn't know is that if it had been bred with some other dog then it would produce very attractive offspring. This is an extreme example, but the point is that just because the fitness of a population member is not currently high does not necessarily mean that it won't be useful in the future.\\
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{figures/highestRanking.png}
+	\caption{A simplified example of population members and their fitness}
+	\label{highestRankingProblem}
+\end{figure}
+
+Figure \ref{highestRankingProblem} gives a visual example of this. Each orange box is a population member, the $x$-axis is the current position of the population member in a search space, and the $y$-axis is the fitness measurement. Current population members 1 and 2 would be chosen over 3 in the highest ranking algorithm. What we don't know is that if 3 had been selected and crossed with another population member then it could easily have had a higher fitness that 1 or 2 currently have. By selecting 1 and 2 we have got stuck in a local maxima.
+
+\subsection{Roulette Wheel}
+
+In order to overcome the problems with roulette wheel selection we must allow for low fitness population members to be included, but we also want to include mainly high fitness population members. A good way of doing this is to select population members with a probability that is proportional to their fitness. So if the sum of fitness across the whole population is 360, and the fittest population member has a fitness of 90, then there is a $\frac{90}{360}$ or $\frac{1}{4}$ chance of the population member being included in the next generation.\\
+
+Figure \ref{rouletteWheel} gives a visual representation of this: the whole area of the wheel represents the summed fitness of the population, and each segment is the proportional fitness of a population member. In the left-hand example, the yellow population member has the highest fitness, and is therefore the most likely to be chosen to continue to the next generation. The green population member has the lowest fitness, and only has a slim chance of being carried through to the next generation. This does not completely fix Highest Ranking's problem that was demonstrated with Figure \ref{highestRankingProblem}, but it is an improvement because it at least gives population member 3 a chance of being carried into the next generation.\\
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{figures/rouletteWheel.png}
+	\caption{Two visual representations of roulette wheel selection}
+	\label{rouletteWheel}
+\end{figure}
+
+Looking again at Figure \ref{rouletteWheel}, but this time the right-hand wheel, we can see the problem with roulette wheel selection. If there is one population member that is significantly fitter than the group average, the chances of it being chosen aren't high enough. For example, if we want to choose a third of the population to take to the new generation, there is a good chance that strongest population member (yellow) will not be chosen.
+
+\subsubsection*{Elitism}
+
+A fix for this problem is to introduce elitism. This is when the fittest population members are immediately chosen for the next generation, and then roulette selection is performed. This is not perfect because if you have one population member with fitness 90, and then twenty members with fitness 89, and six hundred members with an average fitness of 10, then you still only guarantee that the single 90 fitness population member will be carried to the next generation. We could of course say that the two top fitness ratings will be considered, but again the problem could be a 90 fitness member, an 89 fitness member, nineteen 88 fitness rated members and six hundred members with an average fitness of 10. Elitism is unfortunately more of a workaround than a genuine fix.
+
+% TODO: If there's space, discuss and dismiss other methods of selection
+
+\subsection{Conclusion}
+
+I will implement all of the above selection methods, and test each to determine which results in the best final result.
 
 \section{Crossover}
 
