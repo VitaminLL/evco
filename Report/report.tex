@@ -77,7 +77,7 @@ One solution to this is to use Gray code. This is a bit-string where each consec
 
 There are now a few possible options for how Gray code could be used to represent an individual move, and then a series of moves. The first option is to represent the co-ordinates as they are passed into the program in Gray code (remember that a move is passed in to the program as $x_1 y_1 x_2 y_2$). The grid 40x40, so ($\log _2 40 = 5.32$) 6 bits would be required to represent each co-ordinate. Each move would use 24 bits, and if the maximum number of moves is played each time (500), then 12000 bits or 1500 bytes will be required for each population member. If we have a population size of 5000, then the total required space will be 7.15MB.  \\
 
-The second option is to store each move as a combination of (co-ordinate, direction), where co-ordinate is the new cross to draw on the board, and direction is the direction of the line. So ((20, 20), left) would mean draw a cross at position (20, 20), and draw left. This would then be translated into the program's input format $x_1 y_1 x_2 y_2$ to be 20 20 15 20. Again, 6 bits would be required to represent each co-ordinate. As there are 8 possible directions, ($log_2 8$) 3 bits are required to represent the direction that the line should be drawn in. Therefore each move would use 15 bits, giving a maximum of 7500 bits or 938 bytes for each popilation member. With a population size of 5000, the total required space will be 4.47MB. This is a good saving on the last representation described. However, computers nowadays have a lot of memory, and the relative difference between 4.5MB and 7.2MB is not huge. There is also the overhead to consider when the representation has to be converted into program input. The first described representation would be the fairly simple task of converting Gray code to an integer. With this representation, the overhead would be slightly higher, as the start position and direction would need to be considered in order to calculate the program input. \\
+The second option is to store each move as a combination of (co-ordinate, direction), where co-ordinate is the new cross to draw on the board, and direction is the direction of the line. So ((20, 20), left) would mean draw a cross at position (20, 20), and draw left. This would then be translated into the program's input format $x_1 y_1 x_2 y_2$ to be 20 20 15 20. Again, 6 bits would be required to represent each co-ordinate. As there are 8 possible directions, ($log_2 8$) 3 bits are required to represent the direction that the line should be drawn in. Therefore each move would use 15 bits, giving a maximum of 7500 bits or 938 bytes for each population member. With a population size of 5000, the total required space will be 4.47MB. This is a good saving on the last representation described. However, computers nowadays have a lot of memory, and the difference between 4.5MB and 7.2MB is tiny relative to the standard 4GB of memory that a low-end computer has. There is also the overhead to consider when the representation has to be converted into program input. The first described representation would be the fairly simple task of converting Gray code to an integer. With this representation, the overhead would be slightly higher, as the start position and direction would need to be considered in order to calculate the program input. \\
 
 The third and final possible representation that uses Gray code does not use the co-ordinate system as it has been previously described. Starting at the bottom left and moving right, each position will be assigned a single integer. When the end of the row is reached, the above position will be numbered, and then on that row moving left the positions will be numbered. See Figure \ref{alternativePositioning} for a visual explanation. As the grid is 40x40, 1600 positions will be numbered. Describing a move will be done as above, with (postion, line direction). The amount of storage space required will be ($log_2 1600$) 11 bits for the position, and 3 again for the direction. This uses 14 bits per move in total, and sticking with the already used example of 500 moves per population member and 5000 population members will use a total of 4.2MB. A slight saving on the previous representation, but again the overhead increases as we now also have to convert between the new position representation as well as the direction representation. Another disadvantage that comes with this representation is that it is more difficult during the mutation stage to move a move in a particular direction. If you wanted to mutate the population member by changing one of its moves to start two rows above, you have to perform a relatively complex calculation in order to work out the number assigned to the position two rows above. With the above two representations it is easy to convert the Gray code to an integer, add 2 to the y co-ordinate, and then convert back to Gray code. Even better (although not necessarily easier to code) would be to perform the arithmetic in Gray code. \\
 
@@ -90,9 +90,9 @@ The third and final possible representation that uses Gray code does not use the
 
 \subsection{Integer Representation}
 
-The natural input to the program is a set of integers. Using any other representation internally requires that a conversion takes places before the fitness of the population can be calculated. Because of this, it's worth weighing up the pro's and con's of using an integer representation.
+The natural input to the program is a set of integers. Using any other representation internally requires that a conversion takes places before the fitness of the population can be calculated. Because of this, it's worth weighing up the pro's and con's of using an integer representation.\\
 
-To understand a big reason why an integer representation might not be an awful idea, consider the reason for using binary / Gray code. Consider the move 20 20 24 24 that draws a diagonal line from the centre of the grid to the position (24, 24). If we were using a binary representation with 6 bits for each co-ordinate, the move would look like:
+To help understand a reason why an integer representation may be worth considering, I go back to looking at the use binary or Gray code. Consider the move 20 20 24 24 that draws a diagonal line from the centre of the grid to the position (24, 24). If we were using a binary representation with 6 bits for each co-ordinate, the move would look like:
 
 \begin{center}
 \begin{verbatim}
@@ -100,13 +100,13 @@ To understand a big reason why an integer representation might not be an awful i
 \end{verbatim}
 \end{center}
 
-We then perform a mutation operator on the representation that has a 10 \% probability of flipping each bit that it comes across. It outputs the following:
+We then perform a mutation operator on the representation that has a 10\% probability of flipping each bit that it comes across. It outputs the following:
 
 \begin{verbatim}
 	110100 010101 01100 011100
 \end{verbatim}
 
-This is the same as 56 21 24 28, an obviously invalid move because the board is limited to 40x40, and also because no the co-ordinates don't represent a lines that is 5 positions long. \\
+This is the same as 56 21 24 28, an invalid move because the board is limited to 40x40, and also because no the co-ordinates don't represent a line that is 5 positions long. \\
 
 Using an integer representation then the mutation operator would know what changes could be made to a group of integers that would still be valid, and only perform these. For example, with 20 20 24 24, it might decide to shift down by 2 rows, and so it would subtract 2 from the y co-ordinates. Of course there is no reason why this can't be done with a binary representation - using binary arithmetic 000010 could be subtracted from each x co-ordinate, but using binary provides no advantage over using an integer representation, but does include the disadvantage that when used in the `pure' genetic algorithm sense (i.e. flipping bits at random), then there is a high probability of creating an invalid move. Of course this is counteracted by using Gray code, but now we consider crossover. \\
 
@@ -139,7 +139,7 @@ Now that a representation has been decided on, each stage of the genetic algorit
 
 The Highest Ranking selection algorithm is very simple. The population members are sorted in order of fitness, and then a fraction of the top members are selected to continue to the next round. \\
 
-At first glance this sounds like an ideal solution. To understand why this is not necessarily the case, imagine if the population members were dogs. While choosing which dogs to breed to create a new generation of dogs, we only choose the dogs that are the best looking. One particular ugly dog is not chosen to be bred, but what we didn't know is that if it had been bred with some other dog then it would produce very attractive offspring. This is an extreme example, but the point is that just because the fitness of a population member is not currently high does not necessarily mean that it won't be useful in the future.\\
+At first glance this sounds like an ideal solution. To understand why this is not necessarily the case, imagine if the population members were dogs. While choosing which dogs to breed to create a new generation of dogs, we only choose the dogs that are the best looking. One particular ugly dog is not chosen to be bred, but what we didn't know is that if it had been bred with some other dog then it would produce very attractive offspring. This is an extreme example, but the underlying point is that just because the fitness of a population member is not currently high does not necessarily mean that it won't be useful in the future.\\
 
 \begin{figure}
 	\centering
@@ -152,9 +152,9 @@ Figure \ref{highestRankingProblem} gives a visual example of this. Each orange b
 
 \subsection{Roulette Wheel}
 
-In order to overcome the problems with roulette wheel selection we must allow for low fitness population members to be included, but we also want to include mainly high fitness population members. A good way of doing this is to select population members with a probability that is proportional to their fitness. So if the sum of fitness across the whole population is 360, and the fittest population member has a fitness of 90, then there is a $\frac{90}{360}$ or $\frac{1}{4}$ chance of the population member being included in the next generation.\\
+In order to overcome the problems with highest ranking selection we must allow for low fitness population members to be included, but we also want to include mainly high fitness population members. A good way of doing this is to select population members with a probability that is proportional to their fitness. So if the sum of fitness across the whole population is 360, and the fittest population member has a fitness of 90, then there is a $\frac{90}{360}$ or $\frac{1}{4}$ chance of the population member being included in the next generation.\\
 
-Figure \ref{rouletteWheel} gives a visual representation of this: the whole area of the wheel represents the summed fitness of the population, and each segment is the proportional fitness of a population member. In the left-hand example, the yellow population member has the highest fitness, and is therefore the most likely to be chosen to continue to the next generation. The green population member has the lowest fitness, and only has a slim chance of being carried through to the next generation. This does not completely fix Highest Ranking's problem that was demonstrated with Figure \ref{highestRankingProblem}, but it is an improvement because it at least gives population member 3 a chance of being carried into the next generation.\\
+Figure \ref{rouletteWheel} gives a visual representation of this: the whole area of the wheel represents the summed fitness of the population, and each segment is the proportional fitness of a population member. In the left-hand example, the yellow population member has the highest fitness, and is therefore the most likely to be chosen to continue to the next generation. The green population member has the lowest fitness, and only has a slim chance of being carried through to the next generation. This does not completely fix Highest Ranking's problem that was demonstrated with Figure \ref{highestRankingProblem}, but it is an improvement because it at least gives population member 3 a chance of roulette wheelbeing carried into the next generation.\\
 
 \begin{figure}
 	\centering
@@ -167,7 +167,7 @@ Looking again at Figure \ref{rouletteWheel}, but this time the right-hand wheel,
 
 \subsubsection*{Elitism}
 
-A fix for this problem is to introduce elitism. This is when the fittest population members are immediately chosen for the next generation, and then roulette selection is performed. This is not perfect because if you have one population member with fitness 90, and then twenty members with fitness 89, and six hundred members with an average fitness of 10, then you still only guarantee that the single 90 fitness population member will be carried to the next generation. We could of course say that the two top fitness ratings will be considered, but again the problem could be a 90 fitness member, an 89 fitness member, nineteen 88 fitness rated members and six hundred members with an average fitness of 10. Elitism is unfortunately more of a workaround than a genuine fix.
+A fix for this problem is to introduce elitism. This is when the fittest population members are immediately chosen for the next generation, and then roulette selection is performed. This is not perfect because if you have one population member with fitness 90, and then twenty members with fitness 89, and six hundred members with an average fitness of 10, then you still only guarantee that the single 90 fitness population member will be carried to the next generation. We could of course say that the two top fitness ratings will be considered, but again the problem could be a 90 fitness member, an 89 fitness member, nineteen 88 fitness rated members and six hundred members with an average fitness of 10. Elitism is unfortunately more of a workaround than a fix.
 
 % TODO: If there's space, discuss and dismiss other methods of selection
 
@@ -177,7 +177,21 @@ I will implement all of the above selection methods, and test each to determine 
 
 \section{Crossover}
 
+Crossover has fewer decisions to make than selection. To create a new population member we must select two population members (that were selected during the selection stage), look at their list of moves, and decide which moves from each population member to use for the new population member. The decision to make is in when to use the first parent's data, and when to use the second parent's data. (By data I mean the genotype.)\\
+
+In the simplest solution, a random $n$ would be picked that is less than the smallest parent's data. The first parent's data would be copied until position $n$, and then from there the second parent's data from $n$ until the end would be copied. In figure \ref{crossoverFigure}, the value $n$ is the crossover point. \\
+
+The immediate problem that can arise from this with the chosen representation is that is if a crossover point is chosen that isn't between two moves (where a move is a set of 4 integers), then the new move that is created on that point has a high chance of being invalid. How much of a problem this is will be discussed in the results section after I have tried and compared the completely random approach, and the approach that continues to randomly select numbers until one which is between two moves. \\
+
+Another consideration is how many crossover points should be used. The simple approach uses a single crossover point, but when the data size of a population member can be up to 2000 integers, better results may be obtained by crossing in multiple places. These places could be completely random, or selected such that they are between moves. How many positions is optimal will be discussed in the results section. \\
+
+The final consideration is how many parents should be used. Up to this point only two parents has been considered, but there is no reason why three, four, five or even more parents could be used. Of course this would require multiple crossover points, and each crossover point could  Again this is another question that will be answered in the results section.
+
 \section{Mutation}
+
+After selection and crossover, we have a new generation. A small amount of mutation within the new generation allows new solutions to be found that are not currently within the population. Mutation ensures that convergence at a local maxima won't prevent the population from moving to a higher fitness. It may take many generations, but with a decent mutation operator eventually the local maxima will be escaped and fitter members can be generated.\\
+
+The naive mutation operator will move across every population member, and every piece of data in the population member (in this case the list of integers), and with a fixed probability change the data item to some other random data. With my chosen representation each integer changed to some other integer between 0 and 40 with a small probability.
 
 \chapter{The Results}
 
