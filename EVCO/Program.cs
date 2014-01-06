@@ -61,6 +61,9 @@ namespace EVCO
 					case "SAVE_FILE":
 						Configuration.SAVE_FILE = split[1];
 						break;
+					case "CROSSOVER_PARENT_COUNT":
+						Configuration.CROSSOVER_PARENT_COUNT = Convert.ToInt32(split[1]);
+						break;
 					}
 				} catch {
 					Console.WriteLine ("Faulty Parameter: " + s);

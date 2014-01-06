@@ -1,21 +1,21 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Utilities/Solitaire.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Program.cs" Line="9" Column="4" />
-      <File FileName="PopulationMember.cs" Line="21" Column="56" />
-      <File FileName="MutationImplementations/ShiftOneSpaceMutation.cs" Line="11" Column="45" />
-      <File FileName="MutationImplementations/ShiftAndRotateMutation.cs" Line="11" Column="3" />
-      <File FileName="PopulationController.cs" Line="15" Column="21" />
-      <File FileName="SelectionImplementations/RouletteSelectionWithElitism.cs" Line="44" Column="5" />
-      <File FileName="Properties/Configuration.cs" Line="19" Column="49" />
-      <File FileName="Utilities/ClassFactory.cs" Line="19" Column="1" />
-      <File FileName="Utilities/Solitaire.cs" Line="39" Column="39" />
-      <File FileName="CrossoverImplementations/OnePointCrossover.cs" Line="8" Column="21" />
-      <File FileName="SelectionImplementations/RouletteSelection.cs" Line="21" Column="73" />
-      <File FileName="SelectionImplementations/HighestRankingSelection.cs" Line="12" Column="60" />
-      <File FileName="CrossoverImplementations/TwoParents.cs" Line="1" Column="1" />
-      <File FileName="CrossoverImplementations/MultiPointCrossover.cs" Line="19" Column="4" />
+      <File FileName="Program.cs" Line="66" Column="13" />
+      <File FileName="PopulationMember.cs" Line="1" Column="1" />
+      <File FileName="MutationImplementations/ShiftOneSpaceMutation.cs" Line="1" Column="1" />
+      <File FileName="MutationImplementations/ShiftNSpacesMutation.cs" Line="10" Column="15" />
+      <File FileName="PopulationController.cs" Line="79" Column="5" />
+      <File FileName="SelectionImplementations/RouletteSelectionWithElitism.cs" Line="32" Column="28" />
+      <File FileName="SelectionImplementations/RouletteSelection.cs" Line="1" Column="1" />
+      <File FileName="CrossoverImplementations/OnePointCrossover.cs" Line="19" Column="4" />
+      <File FileName="CrossoverImplementations/MultiPointCrossover.cs" Line="25" Column="47" />
+      <File FileName="Interfaces/ICrossover.cs" Line="7" Column="55" />
+      <File FileName="Properties/Configuration.cs" Line="40" Column="3" />
+      <File FileName="Utilities/Solitaire.cs" Line="25" Column="33" />
+      <File FileName="RandomImplementations/StandardRandom.cs" Line="17" Column="1" />
+      <File FileName="Interfaces/IMutation.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

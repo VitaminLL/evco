@@ -12,8 +12,11 @@ namespace EVCO
 			_generator = ClassFactory.GetRandomGenertor ();
 		}
 
-		public PopulationMember crossover (PopulationMember first, PopulationMember second)
+		public PopulationMember crossover (PopulationMember[] parent)
 		{
+			PopulationMember first = parent [0];
+			PopulationMember second = parent [1];
+
 			int shortest = first.parameters.Length > second.parameters.Length ? second.parameters.Length : first.parameters.Length;
 			int crossoverPoint = _generator.next (4, shortest);
 

@@ -4,7 +4,7 @@ namespace EVCO
 {
 	public interface ICrossover
 	{
-		PopulationMember crossover(PopulationMember first, PopulationMember second);
+		PopulationMember crossover(PopulationMember[] parent);
 	}
 }
 

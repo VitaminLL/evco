@@ -2,7 +2,7 @@ using System;
 
 namespace EVCO
 {
-	public class ShiftAndRotateMutation : IMutation
+	public class ShiftNSpacesMutation : IMutation
 	{
 		IRandom _generator;
 
@@ -10,7 +10,7 @@ namespace EVCO
 		// Set this to 10 for prob=0.1, 100 for prob=0.01 etc.
 		int MUTATION_PROBABILITY_INVERSE = Configuration.MUTATION_CHANCE_INVERSE;
 
-		public ShiftAndRotateMutation ()
+		public ShiftNSpacesMutation ()
 		{
 			_generator = ClassFactory.GetRandomGenertor ();
 		}

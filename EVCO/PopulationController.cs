@@ -70,16 +70,15 @@ namespace EVCO
 			}
 
 			for (int i = 0; i < numberToAdd; i++) {
-				int first = probabilityArray [generator.next (0, probabilityArray.Count)];
-				int second = -1;
-				do {
-					second = probabilityArray [generator.next (0, probabilityArray.Count)];
-				} while (second == first);
+				PopulationMember[] parents = new PopulationMember[Configuration.CROSSOVER_PARENT_COUNT];
+				for (int x = 0; x < parents.Length; x++) {
+					parents [x] = newPop[probabilityArray [generator.next (0, probabilityArray.Count)]];
+				}
 
 				//Console.WriteLine ("{4}/{5}: Crossing {0} (fitness {1}) and {2} (fitness {3})", first, newPop[first].lastFitness, second, newPop[second].lastFitness, i, numberToAdd);
 
 				// Mutate crossover members
-				PopulationMember newMember = crosser.crossover(newPop[first], newPop[second]);
+				PopulationMember newMember = crosser.crossover(parents);
 				newMember = mutator.mutate (newMember);
 
 				// With a certain probability, the crossover will be dismissed and a brand new population member introduced
