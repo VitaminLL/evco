@@ -191,10 +191,21 @@ The final consideration is how many parents should be used. Up to this point onl
 
 After selection and crossover, we have a new generation. A small amount of mutation within the new generation allows new solutions to be found that are not currently within the population. Mutation ensures that convergence at a local maxima won't prevent the population from moving to a higher fitness. It may take many generations, but with a decent mutation operator eventually the local maxima will be escaped and fitter members can be generated.\\
 
-The naive mutation operator will move across every population member, and every piece of data in the population member (in this case the list of integers), and with a fixed probability change the data item to some other random data. With my chosen representation each integer changed to some other integer between 0 and 40 with a small probability.
+The naive mutation operator will move across every population member, and every piece of data in the population member (in this case the list of integers), and with a fixed probability change the data item to some other random data. With my chosen representation each integer changed to some other integer between 0 and 40 with a small probability.\\
+
+The problem with the naive approach has the same problem as the naive approach in the above sections - a completely random mutation has a low probability of creating a valid move, but a high probability of destroying a currently valid move.\\
+
+As with the above sections, this can once again be counteracted by being a bit more careful with the mutations that can occur. The most simple approach is to treat the list of integers as groups of 4 (i.e. as moves), and take a group of 4 and shift it one position in a particular direction. For example, if we find the move 15 12 12 12 and decide to mutate it. A direction is chosen at random (from up, down, left, right), for this example we'll choose left. The move becomes 14 12 11 12, so the x co-ordinates have shifted once place to the left.\\
+
+An extension to the above idea is where the number of positions shifted could be chosen randomly, with a normal probability distribution so that shifting 1 space is likely, but shifting 5 spaces is very unlikely.\\
+
+The final enhancement that could be made is that the moves could `rotate'. So the horizontal line that is described above could become a diagonal line. If the representation (co-ordinate, direction) was being used then this would be trivial. However with the chosen representation, the new co-ordinates would have to be calculated from the existing ones, which first involves deciding the current orientation of the line, and then determining which co-ordinates should change and by how much.
+
 
 \chapter{The Results}
 
+\section{Introduction}
+The highest score achieved by my genetic algorithm was 81. 
 \section{Conclusion}
 
 \bibliography{bibliography}
