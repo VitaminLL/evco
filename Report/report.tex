@@ -2,6 +2,8 @@
 
 \usepackage{fullpage}
 \usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{longtable}
 \setlength\parindent{0pt}
 
 % Title Page
@@ -205,9 +207,95 @@ The final enhancement that could be made is that the moves could `rotate'. So th
 \chapter{The Results}
 
 \section{Introduction}
-The highest score achieved by my genetic algorithm was 81. 
+The highest score achieved by my genetic algorithm was 81. In this section I will discuss my solution and how it performed with different parameters.\\
+
+\section{The Code}
+The code was written from scratch in C\#, and built using the Mono framework. Interfaces were defined for Mutation, Crossover, Selection and Random, which allowed me to try different approaches to each without making large changes to the code. Through the parameters passed into the program I could change which module was used for selection, mutation and crossover. Through these parameters I could also specify other useful parameters such as the population size, mutation rate and selection rate. The full list of parameters is found in the appendix.
+
+\section{The Environment}
+A fresh Ubuntu 13.10 installation was used to run the evolutionary algorithm. The computer that it was run on had an Intel quad core i5 2500k, 8GB RAM and a 120GB SSD. \\
+
+The amount of time that the algorithm took to run was almost completely dependent on the population size. The vast majority of computation time was spent on evaluating the fitness of the whole population with the provided executable file. A population of size 1000 took 6 seconds to evaluate, whereas a population of size 5000 took around 45 seconds. I did consider distributing the population evaluation across multiple computers on a network, but due to time constraints I was unable to do this.\\
+
+The use of an SSD improved time slightly. When the option of saving after the creation of a new generation was enabled, having an SSD sped the program up greatly over using a mechanical disk drive.
+
+\section{Results} 
+Because genetic algorithms use randomness to perform mutations and generate populations, it is necessary to run each configuration a number of times and calculate the average and standard deviation. Each of my configurations was run 5 times. The algorithm was stopped after no change in the population fitness had been detected for half the total number of generations, as long as the algorithm had been running for 1 hour. Ideally the algorithm would be given longer to run, but because I have many possible configurations to test, this is not possible. The full table of results is available in the appendix.\\
+
+\subsection{Selection}
+
+I tested Highest Ranking Selection, Roulette Selection and Roulette Selection with Elitism. The results showed that contrary to expectations, Highest Ranking Selection consistently performed better than the other two options. Roulette Selection performed poorly - it gradually approached a score, typically around 20, but then got stuck around there. This happened regardless of selection ratio. Introducing elitism certainly helped, but it was still significantly slower at improving the fitness of the population. Figure \ref{selectionGraphs} shows the results of one run of each (with other settings identical).
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/selectionGraphs.png}
+	\caption{Left: Roulette Selection, Middle: Highest Ranking, Right: Roulette Selection with Elitism. Y Axis: Population Generation, X Axis: Population Fitness}
+	\label{selectionGraphs}
+\end{figure}
+
+\subsection{Crossover}
+Single point and multi-point crossover was implemented. The former is only suitable for two parents, and so that's all it supported. The latter supported any number of parents. I found that two parents was optimal: After 1000 generations of 2, 3, 4, 5 and 6 parent instances (where other parameters were the same), the results were:
+
+\begin{center}
+\begin{tabular}{c|c}
+Parents & Population Fitness \\
+\hline
+2 & 52\\
+3 & 44\\
+4 & 38\\
+5 & 35\\
+6 & 36\\
+\end{tabular}
+\end{center}
+
+The number of crossover points in multi-point crossover was for each crossover chosen randomly. The reasoning behind this is that it was difficult to measure any difference in performance when a fixed number of crossover points was chosen. The results were usually the same $\pm 5$. I set the random generator to choose between 1 and $(genotype length)/16$, as anecdotal evidence suggested that this worked well.\\
+
+\subsection{Mutation}
+Three mutation operators were implemented: Shift One Space, Shift N Spaces, and Shift N Spaces and Rotate. The former moves the position of a move by one position in any direction. Shift N Spaces chooses a random value between 1 and 5, and moves it up, down, left or right by the random amount. Shift N and Rotate does this, and then changes the direction of the line (so where it may have been horizontally, it could change to vertical).\\
+
+The operators performed best in the reverse of the order described above. Under otherwise identical conditions, after 1000 generations and averaged over 5 runs, Shift One Space had a population fitness of 35 ($\sigma=1.4$), Shift N Spaces had a fitness of 38 ($\sigma=1.6$), and Shift N and Rotate had a fitness of 40 ($\sigma=1.2$). The difference between Shift N and Shift N with Rotation seems small, but I discovered that the latter was better at moving away from a local maxima than the former.\\
+
+As an experiment, I added a function that with a certain probability completely overwrite the population member's genome with some completely random moves. I found that with the right probability of occurring (around $\frac{1}{20}$ of all mutations), this increased the population fitness after 10,000 iterations as it helped to prevent getting stuck at a local maxima.
+
+\subsection{Population Size}
+I expected that a larger population would perform better than a small population. I started with a population size of 500, and results with other settings changed ranged from 16 to 38. With a population size of 500, each evaluation of the population took 4.1 seconds on average, with a standard deviation of 0.11 seconds. Such a low standard deviation suggests that varying other parameters makes much less of an impact on the runtime that the population size.\\
+
+I then setup an unused computer with an identical specification running the algorithm with a population size of 20,000, and also running the algorithm with the same parameters, but with a population size of 30. According to \cite{somePaper}, 30 is the ideal population size for the best result to runtime tradeoff. \\
+
+I expected that it would take a long time to run the 20,000 population algorithm, but that ultimately return a higher population fitness. Unfortunately this was not the case - after running for 4 days it had a score 68, and the score had been stuck on that for 22 hours. Each evaluation of the population fitness took around 5 minutes, although it was competing for resources with the 30 population instance. The 30 population instance had a score of 81, although it also had been stuck on that for around 15 hours.
+
 \section{Conclusion}
+The result of 81 is a long way from the world record of 178 \citep{morpionRecord}. I believe that with enough time and computational power that I could come close to the record, and possibly even surpass it.\\
+
+This experiment has provided surprising results. I did not believe that a population size of 30 would be suitable, particularly when the genotype length is 2000 integers. 
 
 \bibliography{bibliography}
 
-\end{document}          
+\chapter{Appendix}
+\begin{landscape}
+\begin{tabular}{r | c | r}
+Parameter & Description & Values \\
+\hline
+CROSSOVER\_OPERATOR & The crossover operator to use & A class implementing ICrossover \\
+SELECTION\_OPERATOR & The selection operator to use & Any class implementing ISelection \\
+MUTATION\_OPERATOR & The mutation operator to use & Any class implementing ISelection \\
+RANDOM\_GENERATOR & The random number generator to use & Any class implementing IRandom \\
+SELECTION\_RATIO & The fraction of population members to keep into the next generation & 0 to 1 \\
+POPULATION\_SIZE & The size of the population & > 0 \\
+MUTATION\_CHANCE\_INVERSE & The inverse of the fraction of population members to mutate & > 0 \\
+NEW\_DURING\_MUTATION\_INVERSE & The inverse of the fraction of population members to generate from scratch during mutation & > 0 \\
+POPULATION\_FILE & The file to load the population from & A population file, or blank means generate new population \\
+SAVE\_FILE & The file to save the population to at the end of each generation & A population file, or blank means don't save \\
+CROSSOVER\_PARENT\_COUNT & The number of parents to use during crossover & > 1 \\ 
+\end{tabular}      
+\end{landscape}  
+
+
+\begin{longtable}{l | l | l}
+\hline
+test & test & test
+\end{longtable}
+
+\end{document}  
+
+
