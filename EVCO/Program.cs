@@ -14,7 +14,15 @@ namespace EVCO
 			controller.InitialisePopulation ();
 			int round = 1;
 
-			while (true) {
+			Console.WriteLine ("Enter unique ID: ");
+			int id = Convert.ToInt32 (Console.ReadLine ());
+
+			Configuration.SAVE_FILE = "OUTPUT_" + id.ToString () + ".TXT";
+
+
+			DateTime dtStart = DateTime.Now;
+
+			while (DateTime.Now < dtStart.AddSeconds(1)) {
 				//controller.ThreadedPrintPopFitness ();
 				controller.PrintPopFitness ();
 				controller.executeNextRound ();
@@ -22,6 +30,29 @@ namespace EVCO
 				if (round % 10 == 0)
 					Console.WriteLine ("Generation " + round.ToString());
 			}
+
+			TextWriter tw = new StreamWriter ("OUTPUT_" + id.ToString () + ".TXT", true);
+
+			tw.WriteLine ("RANDOM_GENERTOR=" + Configuration.RANDOM_GENERTOR_TYPE);
+			tw.WriteLine ("SELECTION_OPERATOR=" + Configuration.SELECTION_OPERATOR_TYPE);
+			tw.WriteLine ("MUTATION_OPERATOR=" + Configuration.MUTATION_OPERATOR_TYPE);
+			tw.WriteLine ("CROSSOVER_OPERATOR=" + Configuration.CROSSOVER_OPERATOR_TYPE);
+			tw.WriteLine ("POPULATION_SIZE=" + Configuration.POPULATION_SIZE);
+			tw.WriteLine ("SELECTION_RATIO=" + Configuration.SELECTION_RATIO);
+			tw.WriteLine ("MUTATION_CHANCE_INVERSE=" + Configuration.MUTATION_CHANCE_INVERSE);
+			tw.WriteLine ("NEW_DURING_MUTATION_INVERSE=" + Configuration.NEW_DURING_MUTATION_INVERSE);
+			tw.WriteLine ("POPULATION_FILE=" + Configuration.POPULATION_FILE);
+			tw.WriteLine ("CROSSOVER_PARENT_COUNT=" + Configuration.CROSSOVER_PARENT_COUNT);
+
+			tw.WriteLine ("Generations:" + round.ToString ());
+			tw.WriteLine ("Best Fitness:" + controller.PrintPopFitness ());
+			tw.WriteLine ("Average Fitness:" + controller.averagePopulationFitness().ToString ());
+			tw.WriteLine ("Fitness StDev:" + controller.popFitnessStdDev (controller.averagePopulationFitness()).ToString());
+
+			tw.Close ();
+
+			Console.WriteLine ("DONE!");
+			Console.ReadLine ();
 		}
 
 		public static void SetupConfiguration (string[] args)

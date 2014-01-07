@@ -1,0 +1,5 @@
+/Users/thomaswormald/Documents/EVCO/evco/EVCO/obj/x86/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/thomaswormald/Documents/EVCO/evco/EVCO/bin/Debug/EVCO.exe.mdb
+/Users/thomaswormald/Documents/EVCO/evco/EVCO/bin/Debug/EVCO.exe
+/Users/thomaswormald/Documents/EVCO/evco/EVCO/obj/x86/Debug/EVCO.exe
+/Users/thomaswormald/Documents/EVCO/evco/EVCO/obj/x86/Debug/EVCO.exe.mdb

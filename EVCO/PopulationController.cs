@@ -138,7 +138,7 @@ namespace EVCO
 
 		}
 
-		public void PrintPopFitness ()
+		public int PrintPopFitness ()
 		{
 			//Console.WriteLine ("Evaluating Fitness... ");
 			int maxFitness = 0;
@@ -151,6 +151,8 @@ namespace EVCO
 			}
 
 			Console.WriteLine ("Fittest Population Member's Fitness: " + maxFitness);
+
+			return maxFitness;
 			//System.Threading.Thread.Sleep (3000);
 		}
 
@@ -184,6 +186,29 @@ namespace EVCO
 			}
 
 			Console.WriteLine ("(ThreadedCount) Fittest Population Member's Fitness: " + maxFitness);
+		}
+
+		public decimal averagePopulationFitness()
+		{
+			decimal d = 0;
+			foreach (PopulationMember p in members)
+			{
+				d += p.lastFitness;
+			}
+			d /= members.Length;
+			return d;
+		}
+
+		public decimal popFitnessStdDev(decimal mean)
+		{
+			decimal sum = 0;
+			foreach (PopulationMember p in members)
+			{
+				sum += ((p.lastFitness - mean) * (p.lastFitness - mean));
+			}
+			sum /= members.Length;
+			sum = (decimal)Math.Sqrt((double)sum);
+			return sum;
 		}
 
 		private static void getMaxFitness (PopulationMember[] members, int start, int stop, ref int result)

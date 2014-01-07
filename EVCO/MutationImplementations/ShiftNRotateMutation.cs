@@ -29,7 +29,7 @@ namespace EVCO
 			PopulationMember newMember = new PopulationMember();
 			newMember.parameters = member.parameters;
 
-			int shiftAmount = _generator.next (1, 10); // Move up to 5 in either direction
+			int shiftAmount = _generator.next (0, 10) - 5; // Move up to 5 in either direction
 			for (int i = 0; i < member.parameters.Length; i+=4) {
 				if (_generator.next (0, MUTATION_PROBABILITY_INVERSE) == 0) {
 					switch (_generator.next (0, 8)) {
