@@ -7,7 +7,7 @@ namespace EVCO
 	{
 		public static string RANDOM_GENERTOR_TYPE = "EVCO.StandardRandom";
 		public static string SELECTION_OPERATOR_TYPE = "EVCO.RouletteSelectionWithElitism";
-		public static string MUTATION_OPERATOR_TYPE = "EVCO.ShiftAndRotateMutation";
+		public static string MUTATION_OPERATOR_TYPE = "EVCO.ShiftNRotateMutation";
 		public static string CROSSOVER_OPERATOR_TYPE = "EVCO.OnePointCrossover";
 
 		public static int POPULATION_SIZE = 500;
