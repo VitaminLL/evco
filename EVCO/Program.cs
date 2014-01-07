@@ -22,7 +22,7 @@ namespace EVCO
 
 			DateTime dtStart = DateTime.Now;
 
-			while (DateTime.Now < dtStart.AddSeconds(1)) {
+			while (DateTime.Now < dtStart.AddHours(1)) {
 				//controller.ThreadedPrintPopFitness ();
 				controller.PrintPopFitness ();
 				controller.executeNextRound ();
