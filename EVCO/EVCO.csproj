@@ -20,7 +20,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
-    <Commandlineparameters>POPULATION_SIZE=30 SELECTION_RATIO=0.2 SELECTION_OPERATOR=EVCO.HighestRankingSelection MUTATION_CHANCE_INVERSE=20 MUTATION_OPERATOR=EVCO.ShiftNSpacesMutation CROSSOVER_OPERATOR=EVCO.MultiPointCrossover NEW_DURING_MUTATION_INVERSE=20 SAVE_FILE=output.txt CROSSOVER_PARENT_COUNT=2</Commandlineparameters>
+    <Commandlineparameters>POPULATION_SIZE=30 SELECTION_RATIO=0.2 SELECTION_OPERATOR=EVCO.RouletteSelectionWithElitism MUTATION_CHANCE_INVERSE=20 MUTATION_OPERATOR=EVCO.ShiftNRotateMutation CROSSOVER_OPERATOR=EVCO.MultiPointCrossover NEW_DURING_MUTATION_INVERSE=20 SAVE_FILE=output.txt CROSSOVER_PARENT_COUNT=2</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -56,6 +56,7 @@
     <Compile Include="SelectionImplementations\RouletteSelectionWithElitism.cs" />
     <Compile Include="CrossoverImplementations\MultiPointCrossover.cs" />
     <Compile Include="MutationImplementations\ShiftNSpacesMutation.cs" />
+    <Compile Include="MutationImplementations\ShiftNRotateMutation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
