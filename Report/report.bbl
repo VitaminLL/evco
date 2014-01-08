@@ -1,0 +1,17 @@
+\begin{thebibliography}{1}
+
+\bibitem{MorpionWebsite}
+Christian Boyer.
+\newblock Morpion solitare, 2013.
+
+\bibitem{ECIntro}
+Smith Eiben.
+\newblock {\em Introduction to Evolutionary Computing}.
+\newblock Spring, 2007.
+
+\bibitem{MitchelGA}
+Melanie Mitchell.
+\newblock {\em An Introduction to Genetic Algorithms}.
+\newblock MIT Press, Cambridge, MA, USA, 1998.
+
+\end{thebibliography}

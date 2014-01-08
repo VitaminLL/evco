@@ -1,0 +1,22 @@
+#!/bin/bash
+
+pdflatex report 
+bibtex bibliography
+pdflatex report
+pdflatex report
+
+EXIT_STATE=$?
+
+if [ $OSTYPE = "darwin12" ]
+then	
+	if [ $EXIT_STATE -eq 0 ]
+	then open main.pdf &
+	else echo 'Build Failed. Not opening pdf'
+	fi
+elif [ $OSTYPE = 'linux-gnu' ]
+then
+	if [ $EXIT_STATE -eq 0 ] 
+	then evince report.pdf &
+	else echo 'Build Failed. Not opening pdf'
+	fi
+fi

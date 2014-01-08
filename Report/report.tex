@@ -4,6 +4,8 @@
 \usepackage{graphicx}
 \usepackage{lscape}
 \usepackage{longtable}
+\usepackage{cite}
+\usepackage{multicol}
 \setlength\parindent{0pt}
 
 % Title Page
@@ -13,16 +15,15 @@
 
 \begin{document}
 \maketitle
-
 \chapter{Introduction}
 
 \section{Genetic Algorithms}
 
-For some problems it can be difficult to find an optimal solution. This is because the search space grows at a much faster rate (exponentially, for example) than the input space. The Travelling Salesperson problem is a perfect example of this - for a search space with $n$ cities, there are $n!$ paths that the salesperson could take.\\
+For some problems it can be difficult to find an optimal solution. This is because the search space grows at a much faster rate (exponentially, for example) than the input space. The Travelling Salesperson problem is a perfect example of this - for a search space with $n$ cities, there are $n!$ paths that the salesperson could take. \cite{ECIntro}\\
 
 Evolutionary algorithms do not present a solution to this problem. However, by taking inspiration from biological evolution, they do offer an alternative approach that will often lead to a `good-enough' solution in a much more reasonable number of calculations. \\
 
-Genetic algorithms are a type of evolutionary algorithm that typically represent population members (i.e. candidate solutions) in bitstrings. The population of strings is repeatedly updated through the following process:
+Genetic algorithms are a type of evolutionary algorithm that typically represent population members (i.e. candidate solutions) in bitstrings \cite{MitchelGA}. The population of strings is repeatedly updated through the following process:
 
 \begin{enumerate}
 	\item Select - A number of the existing population members are selected to continue through to the next round. Typically these would be the fittest members in the current population.
@@ -43,7 +44,7 @@ Genetic algorithms hold much potential, but in order to get the most from them y
 
 \section{The Problem}
 
-Morpion Solitare is a one player game that is typically played on grid paper. To start, a cross shape is drawn in the centre of the page (as shown in figure \ref{morpionSolitare}). On each turn the player must add one cross that creates a line of five crosses either vertically, horizontally or diagonally. The lines may intersect, and in this particular variant the lines may also overlap (it could be argued that this makes the game easier). Figure \ref{morpionSolitare} shows a possible first three moves. Finishing at this stage would give an overall score of 3, as 3 lines of 5 crosses have been formed.\\
+Morpion Solitare is a one player game that is typically played on grid paper. To start, a cross shape is drawn in the centre of the page (as shown in figure \ref{morpionSolitare}). On each turn the player must add one cross that creates a line of five crosses either vertically, horizontally or diagonally. The lines may intersect, and in this particular variant the lines may also overlap (it could be argued that this makes the game easier). Figure \ref{morpionSolitare} shows a possible first three moves. Finishing at this stage would give an overall score of 3, as 3 lines of 5 crosses have been formed \cite{MorpionWebsite}.\\
 
 \begin{figure}
 	\centering
@@ -60,22 +61,20 @@ When designing my genetic algorithm I will have to consider the format that the 
 	linuxMsolitare.exe 12 11 12 7 9 9 9 4 6 13 10 13
 \end{verbatim}
 
-The program accepts a maximum of 2000 inputs, or 500 moves. Given that the current best known solution is 178 \cite{morpionRecord}, this is unlikely going to be a problem. One potential problem is that to evaluate a population of size $n$, the application will need to be called $n$ times. Even with a decent processor, this could be a slow task for any sizeable population. Also, if a representation is chosen that doesn't directly map to the program's inputs is chosen, then each population member's representation will have to be converted to the correct format before the program can even be called. Again, this could be time consuming, but solutions to these problems will be considered in the next section.
+The program accepts a maximum of 2000 inputs, or 500 moves. Given that the current best known solution is 178 \cite{MorpionRecord}, this is unlikely going to be a problem. One potential problem is that to evaluate a population of size $n$, the application will need to be called $n$ times. Even with a decent processor, this could be a slow task for any sizeable population. Also, if a representation is chosen that doesn't directly map to the program's inputs is chosen, then each population member's representation will have to be converted to the correct format before the program can even be called. Again, this could be time consuming, but solutions to these problems will be considered in the next section.
 
 
 \chapter{The Solution}
 
 \section{Representation}
 
-The standard genotype in a genetic algorithm is a bit-string. Studies have shown that in a lot of cases the algorithm will perform better when a bit string is used \cite{something}, although other studies suggest that this is not necessarily the case \cite{somethingElse}.\\
-
-I will now discuss possible representations, and then explain my choice of representation.
+The standard genotype in a genetic algorithm is a bit-string \cite{ECIntro}. Another common format is to use integers. Floating point numbers are also used, although they are not really appropriate for my solution. I will now discuss possible representations, and then explain my choice of representation.
 
 \subsection{Gray Code Bit-string}
 
 Binary bit-strings are not ideal for a genetic algorithm as a single bit flip during the mutation stage can cause the number to change a lot. Consider the bit string $10010110$ that represents the 8 bit unsigned integer 150. During mutation, if just the first bit is flipped, the string becomes $00010110$ and now represents 22. If the search space is a 256x256 grid, and that integer represents one co-ordinate, then 150 to 22 is a large jump. It would be more useful if the co-ordinate changed by just a small amount. If we wanted to change to 149 ($10010101$), two bit flips are required. \\
 
-One solution to this is to use Gray code. This is a bit-string where each consecutive value differs by only one bit. In Gray code, $11011101$ represents 150, and $11011111$ represents 149. That's just a single bit flip, making Gray code ideal for genetic algorithms. \\
+One solution to this is to use Gray code. This is a bit-string where each consecutive value differs by only one bit. In Gray code, $11011101$ represents 150, and $11011111$ represents 149. That's just a single bit flip, making Gray code ideal for genetic algorithms \cite{ECIntro}. \\
 
 There are now a few possible options for how Gray code could be used to represent an individual move, and then a series of moves. The first option is to represent the co-ordinates as they are passed into the program in Gray code (remember that a move is passed in to the program as $x_1 y_1 x_2 y_2$). The grid 40x40, so ($\log _2 40 = 5.32$) 6 bits would be required to represent each co-ordinate. Each move would use 24 bits, and if the maximum number of moves is played each time (500), then 12000 bits or 1500 bytes will be required for each population member. If we have a population size of 5000, then the total required space will be 7.15MB.  \\
 
@@ -139,7 +138,7 @@ Now that a representation has been decided on, each stage of the genetic algorit
 
 \subsection{Highest Ranking}
 
-The Highest Ranking selection algorithm is very simple. The population members are sorted in order of fitness, and then a fraction of the top members are selected to continue to the next round. \\
+The Highest Ranking selection algorithm is very simple. The population members are sorted in order of fitness, and then a fraction of the top members are selected to continue to the next round \cite{ECIntro, MitchelGA}. \\
 
 At first glance this sounds like an ideal solution. To understand why this is not necessarily the case, imagine if the population members were dogs. While choosing which dogs to breed to create a new generation of dogs, we only choose the dogs that are the best looking. One particular ugly dog is not chosen to be bred, but what we didn't know is that if it had been bred with some other dog then it would produce very attractive offspring. This is an extreme example, but the underlying point is that just because the fitness of a population member is not currently high does not necessarily mean that it won't be useful in the future.\\
 
@@ -154,7 +153,7 @@ Figure \ref{highestRankingProblem} gives a visual example of this. Each orange b
 
 \subsection{Roulette Wheel}
 
-In order to overcome the problems with highest ranking selection we must allow for low fitness population members to be included, but we also want to include mainly high fitness population members. A good way of doing this is to select population members with a probability that is proportional to their fitness. So if the sum of fitness across the whole population is 360, and the fittest population member has a fitness of 90, then there is a $\frac{90}{360}$ or $\frac{1}{4}$ chance of the population member being included in the next generation.\\
+In order to overcome the problems with highest ranking selection we must allow for low fitness population members to be included, but we also want to include mainly high fitness population members. A good way of doing this is to select population members with a probability that is proportional to their fitness \cite{MitchelGA}. So if the sum of fitness across the whole population is 360, and the fittest population member has a fitness of 90, then there is a $\frac{90}{360}$ or $\frac{1}{4}$ chance of the population member being included in the next generation.\\
 
 Figure \ref{rouletteWheel} gives a visual representation of this: the whole area of the wheel represents the summed fitness of the population, and each segment is the proportional fitness of a population member. In the left-hand example, the yellow population member has the highest fitness, and is therefore the most likely to be chosen to continue to the next generation. The green population member has the lowest fitness, and only has a slim chance of being carried through to the next generation. This does not completely fix Highest Ranking's problem that was demonstrated with Figure \ref{highestRankingProblem}, but it is an improvement because it at least gives population member 3 a chance of roulette wheelbeing carried into the next generation.\\
 
@@ -169,7 +168,7 @@ Looking again at Figure \ref{rouletteWheel}, but this time the right-hand wheel,
 
 \subsubsection*{Elitism}
 
-A fix for this problem is to introduce elitism. This is when the fittest population members are immediately chosen for the next generation, and then roulette selection is performed. This is not perfect because if you have one population member with fitness 90, and then twenty members with fitness 89, and six hundred members with an average fitness of 10, then you still only guarantee that the single 90 fitness population member will be carried to the next generation. We could of course say that the two top fitness ratings will be considered, but again the problem could be a 90 fitness member, an 89 fitness member, nineteen 88 fitness rated members and six hundred members with an average fitness of 10. Elitism is unfortunately more of a workaround than a fix.
+A fix for this problem is to introduce elitism. This is when the fittest population members are immediately chosen for the next generation, and then roulette selection is performed \cite{ECIntro, MitchelGA}. This is not perfect because if you have one population member with fitness 90, and then twenty members with fitness 89, and six hundred members with an average fitness of 10, then you still only guarantee that the single 90 fitness population member will be carried to the next generation. We could of course say that the two top fitness ratings will be considered, but again the problem could be a 90 fitness member, an 89 fitness member, nineteen 88 fitness rated members and six hundred members with an average fitness of 10. Elitism is unfortunately more of a workaround than a fix.
 
 % TODO: If there's space, discuss and dismiss other methods of selection
 
@@ -191,7 +190,7 @@ The final consideration is how many parents should be used. Up to this point onl
 
 \section{Mutation}
 
-After selection and crossover, we have a new generation. A small amount of mutation within the new generation allows new solutions to be found that are not currently within the population. Mutation ensures that convergence at a local maxima won't prevent the population from moving to a higher fitness. It may take many generations, but with a decent mutation operator eventually the local maxima will be escaped and fitter members can be generated.\\
+After selection and crossover, we have a new generation. A small amount of mutation within the new generation allows new solutions to be found that are not currently within the population. Mutation ensures that convergence at a local maxima won't prevent the population from moving to a higher fitness {MitchelGA}. It may take many generations, but with a decent mutation operator eventually the local maxima will be escaped and fitter members can be generated.\\
 
 The naive mutation operator will move across every population member, and every piece of data in the population member (in this case the list of integers), and with a fixed probability change the data item to some other random data. With my chosen representation each integer changed to some other integer between 0 and 40 with a small probability.\\
 
@@ -220,42 +219,27 @@ The amount of time that the algorithm took to run was almost completely dependen
 The use of an SSD improved time slightly. When the option of saving after the creation of a new generation was enabled, having an SSD sped the program up greatly over using a mechanical disk drive.
 
 \section{Results} 
-Because genetic algorithms use randomness to perform mutations and generate populations, it is necessary to run each configuration a number of times and calculate the average and standard deviation. Each of my configurations was run 5 times. The algorithm was stopped after no change in the population fitness had been detected for half the total number of generations, as long as the algorithm had been running for 1 hour. Ideally the algorithm would be given longer to run, but because I have many possible configurations to test, this is not possible. The full table of results is available in the appendix.\\
+Because genetic algorithms use randomness to perform mutations and generate populations, it is necessary to run each configuration a number of times and calculate the average and standard deviation. Each of my configurations was run 100 times. The algorithm was stopped after one hour. Ideally the algorithm would be given longer to run, but because I have many possible configurations to test, this is not possible. In the following sections I detail the results of changing different parameters.
 
 \subsection{Selection}
 
-I tested Highest Ranking Selection, Roulette Selection and Roulette Selection with Elitism. The results showed that contrary to expectations, Highest Ranking Selection consistently performed better than the other two options. Roulette Selection performed poorly - it gradually approached a score, typically around 20, but then got stuck around there. This happened regardless of selection ratio. Introducing elitism certainly helped, but it was still significantly slower at improving the fitness of the population. Figure \ref{selectionGraphs} shows the results of one run of each (with other settings identical).
-
-\begin{figure}
-	\centering
-	\includegraphics[width=\textwidth]{figures/selectionGraphs.png}
-	\caption{Left: Roulette Selection, Middle: Highest Ranking, Right: Roulette Selection with Elitism. Y Axis: Population Generation, X Axis: Population Fitness}
-	\label{selectionGraphs}
-\end{figure}
+I tested Highest Ranking Selection, Roulette Selection and Roulette Selection with Elitism. The results showed that contrary to expectations, Highest Ranking Selection performed just as well as Roulette Selection with Elitism. Roulette Selection performed poorly - it gradually approached a score, typically around 20, but then got stuck around there. This happened regardless of selection ratio. Introducing elitism certainly helped, although I found that over as the scores went into the 50's, Roulette Selection with Elitism slowed down whereas Highest Ranking Selection continued steadily. Box plot figure \ref{BPselectionOperator} shows that Roulette Selection with Elitism has a much higher average population fitness than Highest Ranking Selection. I can't explain why that means that ultimately Highest Ranking Selection performs better.
 
 \subsection{Crossover}
-Single point and multi-point crossover was implemented. The former is only suitable for two parents, and so that's all it supported. The latter supported any number of parents. I found that two parents was optimal: After 1000 generations of 2, 3, 4, 5 and 6 parent instances (where other parameters were the same), the results were:
+Single point and multi-point crossover was implemented. The former is only suitable for two parents, and so that's all it supported. The latter supported any number of parents. \\
 
-\begin{center}
-\begin{tabular}{c|c}
-Parents & Population Fitness \\
-\hline
-2 & 52\\
-3 & 44\\
-4 & 38\\
-5 & 35\\
-6 & 36\\
-\end{tabular}
-\end{center}
+Interestingly the results suggest that single point crossover doesn't perform much worse that multi-point crossover with two parents \ref{BPcrossoverOperator}. The number of crossover points in multi-point crossover was for each crossover chosen randomly. The reasoning behind this is that it was difficult to measure any difference in performance when a fixed number of crossover points was chosen. The results were usually the same $\pm 5$. I set the random generator to choose between 1 and $(genotype length)/16$, as anecdotal evidence suggested that this worked well.\\
 
-The number of crossover points in multi-point crossover was for each crossover chosen randomly. The reasoning behind this is that it was difficult to measure any difference in performance when a fixed number of crossover points was chosen. The results were usually the same $\pm 5$. I set the random generator to choose between 1 and $(genotype length)/16$, as anecdotal evidence suggested that this worked well.\\
+When the number of parents increased, the results weren't much difference, except that the average population fitness was a lot higher (1.58 for 2 parents, 8.56 for 10 parents), as shown in Figure \ref{BPcrossoverParentCount}.
 
 \subsection{Mutation}
 Three mutation operators were implemented: Shift One Space, Shift N Spaces, and Shift N Spaces and Rotate. The former moves the position of a move by one position in any direction. Shift N Spaces chooses a random value between 1 and 5, and moves it up, down, left or right by the random amount. Shift N and Rotate does this, and then changes the direction of the line (so where it may have been horizontally, it could change to vertical).\\
 
-The operators performed best in the reverse of the order described above. Under otherwise identical conditions, after 1000 generations and averaged over 5 runs, Shift One Space had a population fitness of 35 ($\sigma=1.4$), Shift N Spaces had a fitness of 38 ($\sigma=1.6$), and Shift N and Rotate had a fitness of 40 ($\sigma=1.2$). The difference between Shift N and Shift N with Rotation seems small, but I discovered that the latter was better at moving away from a local maxima than the former.\\
+The operators performed best in the order described above. Shift One Space had a significantly higher median and maximum value, as well as a higher population fitness average. Shift N Rotate performed significantly worse, and Shift N worse still. This shows that smaller, more subtle mutations work better for increasing the fitness of the population. Figure \ref{BPmutationOperator} visualises this.\\
 
-As an experiment, I added a function that with a certain probability completely overwrite the population member's genome with some completely random moves. I found that with the right probability of occurring (around $\frac{1}{20}$ of all mutations), this increased the population fitness after 10,000 iterations as it helped to prevent getting stuck at a local maxima.
+As an experiment, I added a function that with a certain probability completely overwrite the population member's genome with some completely random moves. I found that with the right probability of occurring (around $\frac{1}{20}$ of all mutations), this increased the population fitness after 10,000 iterations as it helped to prevent getting stuck at a local maxima. The box plot in figure \ref{BPnewDuringMutation} compares an extreme example of having a one in five chance of generating a whole new random population member with not doing this at all, and the results are surprising - the former performs better (median of 22 against 10, population fitness average of 2.16 over 2.77). It should be noted that it seems to create a few good population members, although the average fitness is lower.\\
+
+Finally I investigated the effects of adjusting the mutation chance. The algorithm goes over each population member and decides to mutate it with a certain probability. The results seem to be in line with the mutation operator results, and suggest that fewer mutations is better than a lot of mutations. With a 1 in 100 probability of mutating a population member, a population fitness median of 34 was obtained, and an average fitness across the population of 8.5. With the 1 in 20 probability the median was just 25, although the average fitness across the population was 16.28 (see Figure \ref{BPmutationChance}).
 
 \subsection{Population Size}
 I expected that a larger population would perform better than a small population. I started with a population size of 500, and results with other settings changed ranged from 16 to 38. With a population size of 500, each evaluation of the population took 4.1 seconds on average, with a standard deviation of 0.11 seconds. Such a low standard deviation suggests that varying other parameters makes much less of an impact on the runtime that the population size.\\
@@ -265,11 +249,27 @@ I then setup an unused computer with an identical specification running the algo
 I expected that it would take a long time to run the 20,000 population algorithm, but that ultimately return a higher population fitness. Unfortunately this was not the case - after running for 4 days it had a score 68, and the score had been stuck on that for 22 hours. Each evaluation of the population fitness took around 5 minutes, although it was competing for resources with the 30 population instance. The 30 population instance had a score of 81, although it also had been stuck on that for around 15 hours.
 
 \section{Conclusion}
-The result of 81 is a long way from the world record of 178 \citep{morpionRecord}. I believe that with enough time and computational power that I could come close to the record, and possibly even surpass it.\\
+The result of 81 is a long way from the world record of 178 \cite{morpionRecord}. I believe that with enough time and computational power that I could come close to the record, and possibly even surpass it.\\
 
-This experiment has provided surprising results. I did not believe that a population size of 30 would be suitable, particularly when the genotype length is 2000 integers. 
+This experiment has provided surprising results. I did not believe that a population size of 30 would be suitable, particularly when the genotype length is 2000 integers. What I discovered though is that the number of generations is more important than the population size, as it allows for many mutations to occur that ultimately increase the fitness of the population. 
 
-\bibliography{bibliography}
+\chapter{Discussion}
+\section{Critique}
+\subsection{Overall Approach}
+From the very beginning of the project I chose to approach the problem with a genetic algorithm. There is another approach that I could have taken though, which is genetic programming. I have more experience with genetic algorithms, which is why I decided to use them. This is a poor way to decide on an approach, as with additional research I would likely have done just as well, if not better, by using genetic programming.
+
+\subsection{Choice of Programming Language}
+ECJ is a java based framework for evolutionary algorithms \cite{something}. It would have been ideal for this problem, as it reduces some of the complexity of implementing a genetic algorithm by providing a framework. I decided that I wanted to start from scratch in C\# as I thought it would be more interesting. While I believe that it probably was more interesting, it is not a proper reason for not using a tried and tested framework. By starting from scratch I likely wasted valuable time that could have been spent improving my algorithm or allowing instances to run for longer.
+
+\subsection{Statistical Analysis}
+While building the program I wasn't thinking about writing a formal report, and so not all of the instances of the program had their results recorded. I also suspect that had a lot of the instances had longer to run, that they would have performed better. Unfortunately time was limited as I spent so long writing the code. Early versions of the program also neglected to output the number of the current generation, which would have been very valuable for comparisons between other instances (because if one instance stops at 42 after 2000 generations, and one stops at 45 after 200,000 generations, we will conclude that the latter is better, despite taking so much longer).
+
+\section{Further Work}
+\subsection{Automatic Statistical Analysis}
+Most instances had their results stored on a piece of paper until I had the opportunity to type them up into the table in the appendix. It would have been very useful if early on I had included a function that automatically logged the results to a spreadsheet. I think that this would also be fairly easy to retroactively implement.
+
+\subsection{Parameter Picking}
+Because there are so many parameters, it is too time consuming to thoroughly test every single combination. I tried to get a good range of results, although it is possible that some combinations of parameters that weren't tried would have given better results. A better approach may have been to implement a basic genetic algorithm for choosing the parameters. The only downside to this approach is that it would have taken a very, very long time to evaluate a population!
 
 \chapter{Appendix}
 \begin{landscape}
@@ -290,11 +290,52 @@ CROSSOVER\_PARENT\_COUNT & The number of parents to use during crossover & > 1 \
 \end{tabular}      
 \end{landscape}  
 
-
+\cite{brambillaBook}
 \begin{longtable}{l | l | l}
 \hline
 test & test & test
 \end{longtable}
+
+\bibliography{bibliography}
+\bibliographystyle{plain}
+
+\section{Box Plots of Results}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/selectionOperator.png}
+	\label{BPselectionOperator}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/crossoverOperator.png}
+	\label{BPcrossoverOperator}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/crossoverParentCount.png}
+	\label{BPcrossoverParentCount}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/mutationOperator.png}
+	\label{BPmutationOperator}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/newDuringMutation.png}
+	\label{BPnewDuringMutation}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/mutationChance.png}
+	\label{BPmutationChance}
+\end{figure}
 
 \end{document}  
 
