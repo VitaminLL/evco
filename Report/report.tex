@@ -244,14 +244,16 @@ Finally I investigated the effects of adjusting the mutation chance. The algorit
 \subsection{Population Size}
 I expected that a larger population would perform better than a small population. I started with a population size of 500, and results with other settings changed ranged from 16 to 38. With a population size of 500, each evaluation of the population took 4.1 seconds on average, with a standard deviation of 0.11 seconds. Such a low standard deviation suggests that varying other parameters makes much less of an impact on the runtime that the population size.\\
 
-I then setup an unused computer with an identical specification running the algorithm with a population size of 20,000, and also running the algorithm with the same parameters, but with a population size of 30. According to \cite{somePaper}, 30 is the ideal population size for the best result to runtime tradeoff. \\
+I then setup an unused computer with an identical specification running the algorithm with a population size of 20,000, and also running the algorithm with the same parameters, but with a population size of 30. According to \cite{MitchelGA}, 30 is the ideal population size for the best result to runtime tradeoff. \\
 
-I expected that it would take a long time to run the 20,000 population algorithm, but that ultimately return a higher population fitness. Unfortunately this was not the case - after running for 4 days it had a score 68, and the score had been stuck on that for 22 hours. Each evaluation of the population fitness took around 5 minutes, although it was competing for resources with the 30 population instance. The 30 population instance had a score of 81, although it also had been stuck on that for around 15 hours.
+I expected that it would take a long time to run the 20,000 population algorithm, but that ultimately returned a higher population fitness. Unfortunately this was not the case - after running for 4 days it had a score 68, and the score had been stuck on that for 22 hours. Each evaluation of the population fitness took around 5 minutes, although it was competing for resources with the 30 population instance. The 30 population instance had a score of 81, although it also had been stuck on that for around 15 hours.\\
+
+A more scientific approach to the analysis is shown in figure \ref{BPpopulationSize}. After an hour was up the 2500 population instance was at a max fitness of 25, slightly ahead of the 30 population instance at 24. However the 2500 population instance had only evaluated an average of 51.4 generations, whereas the 30 population instance had evaluated 7208.6 generations. Unfortunately this doesn't tell us much about the effect of population sizes.
 
 \section{Conclusion}
 The result of 81 is a long way from the world record of 178 \cite{morpionRecord}. I believe that with enough time and computational power that I could come close to the record, and possibly even surpass it.\\
 
-This experiment has provided surprising results. I did not believe that a population size of 30 would be suitable, particularly when the genotype length is 2000 integers. What I discovered though is that the number of generations is more important than the population size, as it allows for many mutations to occur that ultimately increase the fitness of the population. 
+This experiment has provided surprising results. I did not believe that a population size of 30 would be suitable, particularly when the genotype length is 2000 integers. What I discovered though is that subtle, less frequent mutations provide a better results that more random and frequent mutations.
 
 \chapter{Discussion}
 \section{Critique}
@@ -262,42 +264,33 @@ From the very beginning of the project I chose to approach the problem with a ge
 ECJ is a java based framework for evolutionary algorithms \cite{something}. It would have been ideal for this problem, as it reduces some of the complexity of implementing a genetic algorithm by providing a framework. I decided that I wanted to start from scratch in C\# as I thought it would be more interesting. While I believe that it probably was more interesting, it is not a proper reason for not using a tried and tested framework. By starting from scratch I likely wasted valuable time that could have been spent improving my algorithm or allowing instances to run for longer.
 
 \subsection{Statistical Analysis}
-While building the program I wasn't thinking about writing a formal report, and so not all of the instances of the program had their results recorded. I also suspect that had a lot of the instances had longer to run, that they would have performed better. Unfortunately time was limited as I spent so long writing the code. Early versions of the program also neglected to output the number of the current generation, which would have been very valuable for comparisons between other instances (because if one instance stops at 42 after 2000 generations, and one stops at 45 after 200,000 generations, we will conclude that the latter is better, despite taking so much longer).
+As I spent so much time on the programming, I neglected the statistical analysis somewhat. It would have been interesting to analyse the statistical significance of some of the results. I also wonder if controlling the random function slightly so that's it's not actually random would have allowed for more accurate comparisons of operators. I think that as the results were averaged over 1000 instances that this probably doesn't make too much of a difference.
 
 \section{Further Work}
-\subsection{Automatic Statistical Analysis}
-Most instances had their results stored on a piece of paper until I had the opportunity to type them up into the table in the appendix. It would have been very useful if early on I had included a function that automatically logged the results to a spreadsheet. I think that this would also be fairly easy to retroactively implement.
 
 \subsection{Parameter Picking}
 Because there are so many parameters, it is too time consuming to thoroughly test every single combination. I tried to get a good range of results, although it is possible that some combinations of parameters that weren't tried would have given better results. A better approach may have been to implement a basic genetic algorithm for choosing the parameters. The only downside to this approach is that it would have taken a very, very long time to evaluate a population!
 
+\subsection{Distributed Population Fitness Evaluation}
+A population of size 30 works well because it can be evaluated rapidly, allowing for more generations. If the fitness evaluation was distributed across a network of computers, then larger populations should evaluate just as quickly. I would be interested to see if this improves the best fitness.
 \chapter{Appendix}
-\begin{landscape}
-\begin{tabular}{r | c | r}
-Parameter & Description & Values \\
-\hline
-CROSSOVER\_OPERATOR & The crossover operator to use & A class implementing ICrossover \\
-SELECTION\_OPERATOR & The selection operator to use & Any class implementing ISelection \\
-MUTATION\_OPERATOR & The mutation operator to use & Any class implementing ISelection \\
-RANDOM\_GENERATOR & The random number generator to use & Any class implementing IRandom \\
-SELECTION\_RATIO & The fraction of population members to keep into the next generation & 0 to 1 \\
-POPULATION\_SIZE & The size of the population & > 0 \\
-MUTATION\_CHANCE\_INVERSE & The inverse of the fraction of population members to mutate & > 0 \\
-NEW\_DURING\_MUTATION\_INVERSE & The inverse of the fraction of population members to generate from scratch during mutation & > 0 \\
-POPULATION\_FILE & The file to load the population from & A population file, or blank means generate new population \\
-SAVE\_FILE & The file to save the population to at the end of each generation & A population file, or blank means don't save \\
-CROSSOVER\_PARENT\_COUNT & The number of parents to use during crossover & > 1 \\ 
-\end{tabular}      
-\end{landscape}  
-
-\cite{brambillaBook}
-\begin{longtable}{l | l | l}
-\hline
-test & test & test
-\end{longtable}
-
-\bibliography{bibliography}
-\bibliographystyle{plain}
+%\begin{landscape}
+%\begin{tabular}{r | c | r}
+%Parameter & Description & Values \\
+%\hline
+%CROSSOVER\_OPERATOR & The crossover operator to use & A class implementing ICrossover \\
+%SELECTION\_OPERATOR & The selection operator to use & Any class implementing ISelection \\
+%MUTATION\_OPERATOR & The mutation operator to use & Any class implementing ISelection \\
+%RANDOM\_GENERATOR & The random number generator to use & Any class implementing IRandom \\
+%SELECTION\_RATIO & The fraction of population members to keep into the next generation & 0 to 1 \\
+%POPULATION\_SIZE & The size of the population & > 0 \\
+%MUTATION\_CHANCE\_INVERSE & The inverse of the fraction of population members to mutate & > 0 \\
+%NEW\_DURING\_MUTATION\_INVERSE & The inverse of the fraction of population members to generate from scratch during mutation & > 0 \\
+%POPULATION\_FILE & The file to load the population from & A population file, or blank means generate new population \\
+%SAVE\_FILE & The file to save the population to at the end of each generation & A population file, or blank means don't save \\
+%CROSSOVER\_PARENT\_COUNT & The number of parents to use during crossover & > 1 \\ 
+%\end{tabular}      
+%\end{landscape}  
 
 \section{Box Plots of Results}
 
@@ -305,37 +298,55 @@ test & test & test
 	\centering
 	\includegraphics[width=\textwidth]{figures/boxplots/selectionOperator.png}
 	\label{BPselectionOperator}
+	\caption{Selection Operator Comparison}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/boxplots/crossoverOperator.png}
 	\label{BPcrossoverOperator}
+	\caption{Crossover Operator Comparison}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/boxplots/crossoverParentCount.png}
 	\label{BPcrossoverParentCount}
+	\caption{Crossover Parent Count Comparison}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/boxplots/mutationOperator.png}
 	\label{BPmutationOperator}
+	\caption{Mutation Operator Comparison}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/boxplots/newDuringMutation.png}
 	\label{BPnewDuringMutation}
+	\caption{Comparison of Introducing Random New Population Members}
 \end{figure}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/boxplots/mutationChance.png}
 	\label{BPmutationChance}
+	\caption{Comparison of Different Mutation Probabilities}
 \end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{figures/boxplots/populationSize.png}
+	\label{BPpopulationSize}
+	\caption{Comparison of Two Population Sizes}
+\end{figure}
+
+
+\bibliography{bibliography}
+\bibliographystyle{plain}
+
 
 \end{document}  
 

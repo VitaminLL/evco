@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2011.1.20)  8 JAN 2014 01:25
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2011.1.20)  8 JAN 2014 01:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -444,26 +444,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 236--237
  []
 
 
-LaTeX Warning: Reference `BPmutationOperator' on page 10 undefined on input lin
-e 238.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 238--239
 
  []
 
 
-LaTeX Warning: Reference `BPnewDuringMutation' on page 10 undefined on input li
-ne 240.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 240--241
 
  []
-
-
-LaTeX Warning: Reference `BPmutationChance' on page 10 undefined on input line 
-242.
 
 [10]
 Underfull \hbox (badness 10000) in paragraph at lines 245--246
@@ -471,82 +459,69 @@ Underfull \hbox (badness 10000) in paragraph at lines 245--246
  []
 
 
-LaTeX Warning: Citation `somePaper' on page 11 undefined on input line 247.
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 247--248
 
  []
 
 
-LaTeX Warning: Citation `morpionRecord' on page 11 undefined on input line 252.
+Underfull \hbox (badness 10000) in paragraph at lines 249--250
+
+ []
+
+
+LaTeX Warning: Citation `morpionRecord' on page 11 undefined on input line 254.
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 252--253
+Underfull \hbox (badness 10000) in paragraph at lines 254--255
 
  []
 
 [11]
 Chapter 4.
 
-LaTeX Warning: Citation `something' on page 12 undefined on input line 262.
+LaTeX Warning: Citation `something' on page 12 undefined on input line 264.
 
 [12
 
 ] [13]
 Chapter 5.
-[14
-
-]
-Overfull \hbox (256.07997pt too wide) in paragraph at lines 276--291
-[][] 
- []
-
-[15
-
-]
-
-LaTeX Warning: Citation `brambillaBook' on page 16 undefined on input line 293.
-
-
-
-Underfull \vbox (badness 10000) detected at line 297
- []
-
-(./report.bbl [16
-
-])
-<figures/boxplots/selectionOperator.png, id=74, 723.45282pt x 217.5628pt>
+<figures/boxplots/selectionOperator.png, id=65, 723.45282pt x 217.5628pt>
 File: figures/boxplots/selectionOperator.png Graphic file (type png)
 
 <use figures/boxplots/selectionOperator.png>
-<figures/boxplots/crossoverOperator.png, id=75, 723.45282pt x 216.05719pt>
+<figures/boxplots/crossoverOperator.png, id=66, 723.45282pt x 216.05719pt>
 File: figures/boxplots/crossoverOperator.png Graphic file (type png)
 
 <use figures/boxplots/crossoverOperator.png>
-<figures/boxplots/crossoverParentCount.png, id=76, 724.20563pt x 217.5628pt>
+<figures/boxplots/crossoverParentCount.png, id=67, 724.20563pt x 217.5628pt>
 File: figures/boxplots/crossoverParentCount.png Graphic file (type png)
 
 <use figures/boxplots/crossoverParentCount.png>
-<figures/boxplots/mutationOperator.png, id=77, 723.45282pt x 216.81pt>
+<figures/boxplots/mutationOperator.png, id=68, 723.45282pt x 216.81pt>
 File: figures/boxplots/mutationOperator.png Graphic file (type png)
 
 <use figures/boxplots/mutationOperator.png>
-<figures/boxplots/newDuringMutation.png, id=78, 722.7pt x 217.5628pt>
+<figures/boxplots/newDuringMutation.png, id=69, 722.7pt x 217.5628pt>
 File: figures/boxplots/newDuringMutation.png Graphic file (type png)
 
 <use figures/boxplots/newDuringMutation.png>
-<figures/boxplots/mutationChance.png, id=79, 722.7pt x 217.5628pt>
+<figures/boxplots/mutationChance.png, id=70, 722.7pt x 217.5628pt>
 File: figures/boxplots/mutationChance.png Graphic file (type png)
 
-<use figures/boxplots/mutationChance.png> [17
+<use figures/boxplots/mutationChance.png>
+<figures/boxplots/populationSize.png, id=71, 723.45282pt x 216.05719pt>
+File: figures/boxplots/populationSize.png Graphic file (type png)
 
- <./figures/boxplots/selectionOperator.png (PNG copy)>] [18 <./figures/boxplots
+<use figures/boxplots/populationSize.png> (./report.bbl [14
+
+ <./figures/boxplots/selectionOperator.png (PNG copy)>] [15 <./figures/boxplots
 /crossoverOperator.png (PNG copy)> <./figures/boxplots/crossoverParentCount.png
- (PNG copy)> <./figures/boxplots/mutationOperator.png (PNG copy)>] [19 <./figur
+ (PNG copy)> <./figures/boxplots/mutationOperator.png (PNG copy)>] [16 <./figur
 es/boxplots/newDuringMutation.png (PNG copy)> <./figures/boxplots/mutationChanc
-e.png (PNG copy)>] (./report.aux)
+e.png (PNG copy)> <./figures/boxplots/populationSize.png (PNG copy)>]) [17
+
+] (./report.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -555,13 +530,13 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 1768 strings out of 493763
- 26899 string characters out of 3139632
- 84774 words of memory out of 3000000
- 5047 multiletter control sequences out of 15000+200000
+ 1771 strings out of 493763
+ 27050 string characters out of 3139632
+ 84818 words of memory out of 3000000
+ 5049 multiletter control sequences out of 15000+200000
  9621 words of font info for 34 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 38i,7n,23p,1717b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,23p,1717b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
 </opt/york/cs/net/texlive-2010-x86_64-1/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmbx10.pfb></opt/york/cs/net/texlive-2010-x86_64-1/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmbx12.pfb></opt/york/cs/net/texlive-2010-x86_64-1/texmf-dis
@@ -574,10 +549,10 @@ nts/cm/cmr7.pfb></opt/york/cs/net/texlive-2010-x86_64-1/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmsy10.pfb></opt/york/cs/net/texlive-2010-x86_64-1/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmti10.pfb></opt/york/cs/net/texlive-2010-x86_
 64-1/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (20 pages, 265203 bytes).
+Output written on report.pdf (18 pages, 275497 bytes).
 PDF statistics:
- 124 PDF objects out of 1000 (max. 8388607)
- 77 compressed objects within 1 object stream
+ 118 PDF objects out of 1000 (max. 8388607)
+ 72 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 
